@@ -1,0 +1,15 @@
+It's So Easy Slack
+
+read and respond to slack messages from arch linux
+
+in a terminal
+
+with no window manager
+
+but a nice console font
+
+/ises u - unread
+/ises t - tail last file messages of x
+/ises s - speak
+/ises e - edit last message
+
