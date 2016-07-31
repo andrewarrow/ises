@@ -1,4 +1,4 @@
-=It's So Easy Slack (i.s.e.s)=
+**It's So Easy Slack** (i.s.e.s)
 
 read and respond to slack messages from arch linux
 
