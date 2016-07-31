@@ -1,12 +1,6 @@
 **It's So Easy Slack** (i.s.e.s)
 
-read and respond to slack messages from arch linux
-
-in a terminal
-
-with no window manager
-
-but a nice console font
+read and respond to slack messages from a command line
 
 ```
 from real history:
