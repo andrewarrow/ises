@@ -1,4 +1,4 @@
-It's So Easy Slack (i.s.e.s)
+=It's So Easy Slack (i.s.e.s)=
 
 read and respond to slack messages from arch linux
 
@@ -42,7 +42,7 @@ future ideas:
 /ises e - edit last message
 ```
 
-Where does isec name come from?
+Where does ises name come from?
 
 https://github.com/andrewarrow/paradise_ftp
 https://github.com/andrewarrow/jungle_smtp
