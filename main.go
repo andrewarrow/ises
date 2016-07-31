@@ -21,12 +21,9 @@ func main() {
 		key := fmt.Sprintf("SLACK_TOKEN_%s", *team)
 		api := slack.New(os.Getenv(key))
 		params := slack.PostMessageParameters{}
-		attachment := slack.Attachment{
-			Pretext: "",
-			Text:    *say,
-		}
-		params.Attachments = []slack.Attachment{attachment}
-		cid, ts, err := api.PostMessage(*id, "", params)
+		//attachment := slack.Attachment{ Pretext: "", Text:    *say, }
+		//params.Attachments = []slack.Attachment{attachment}
+		cid, ts, err := api.PostMessage(*id, *say, params)
 		fmt.Println(cid, ts, err)
 
 		return
@@ -71,7 +68,6 @@ func main() {
 		channels, err := api.GetChannels(true)
 		if err != nil {
 			fmt.Printf("%s\n", err)
-			return
 		}
 		for _, channel := range channels {
 			fmt.Println(channel.ID, channel.Name)
@@ -79,7 +75,6 @@ func main() {
 		groups, err := api.GetGroups(true)
 		if err != nil {
 			fmt.Printf("%s\n", err)
-			return
 		}
 		for _, group := range groups {
 			fmt.Println(group.ID, group.Name)
