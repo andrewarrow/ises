@@ -67,13 +67,21 @@ func main() {
 		key := fmt.Sprintf("SLACK_TOKEN_%d", i)
 		fmt.Println(key)
 		api := slack.New(os.Getenv(key))
-		channels, err := api.GetChannels(false)
+		channels, err := api.GetChannels(true)
 		if err != nil {
 			fmt.Printf("%s\n", err)
 			return
 		}
 		for _, channel := range channels {
 			fmt.Println(channel.ID, channel.Name)
+		}
+		groups, err := api.GetGroups(true)
+		if err != nil {
+			fmt.Printf("%s\n", err)
+			return
+		}
+		for _, group := range groups {
+			fmt.Println(group.ID, group.Name)
 		}
 
 		i++
