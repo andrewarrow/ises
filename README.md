@@ -19,6 +19,10 @@ from real history:
 to run:
 
 ```
+go get github.com/andrewarrow/ises
+cd that dir
+go build
+./ises
 set these env vars
 SLACK_TEAMS=2
 SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
