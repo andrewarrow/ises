@@ -41,3 +41,10 @@ future ideas:
 /ises s - speak
 /ises e - edit last message
 ```
+
+Where does isec name come from?
+
+https://github.com/andrewarrow/paradise_ftp
+https://github.com/andrewarrow/jungle_smtp
+see the pattern?
+
