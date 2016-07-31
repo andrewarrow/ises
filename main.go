@@ -23,7 +23,7 @@ func main() {
 			api := slack.New(os.Getenv(key))
 			users, _ := api.GetUsers()
 			for _, user := range users {
-				fmt.Println(i, user.Name)
+				fmt.Println(user.ID, i, user.Name)
 			}
 
 			i++
