@@ -1,4 +1,4 @@
-It's So Easy Slack
+It's So Easy Slack (i.s.e.s)
 
 read and respond to slack messages from arch linux
 
@@ -8,13 +8,18 @@ with no window manager
 
 but a nice console font
 
+```
+from real history:
+  445  ./ises -t 0 -id C0K5LNG2H                 # list message history from that id
+  458  ./ises -p 1                               # list all people in all teams
+  487  ./ises -t 0 -id U0FRP3RCN -s test         # say test in that place
+```
+
+
+```
+future ideas:
 /ises u - unread
 /ises t - tail last file messages of x
 /ises s - speak
 /ises e - edit last message
-
-```
-  445  ./ises -t 0 -id C0K5LNG2H                 # list message history from that id
-  458  ./ises -p 1                               # list all people in all teams
-  487  ./ises -t 0 -id U0FRP3RCN -s test         # say test in that place
 ```
