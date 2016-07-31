@@ -10,6 +10,7 @@ but a nice console font
 
 ```
 from real history:
+  444  ./ises                                    # lists all conversations in all teams
   445  ./ises -t 0 -id C0K5LNG2H                 # list message history from that id
   458  ./ises -p 1                               # list all people in all teams
   487  ./ises -t 0 -id U0FRP3RCN -s test         # say test in that place
