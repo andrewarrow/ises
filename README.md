@@ -22,9 +22,11 @@ SLACK_TEAMS=2
 SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
 SLACK_TOKEN_0=xoxp-4422442222-3111111111-11111111118-11aeea211e
 
-you can get tokens:
+you can get test tokens:
 
 https://api.slack.com/docs/oauth-test-tokens
+
+or make real ones with generate.rb
 ```
 
 
