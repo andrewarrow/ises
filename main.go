@@ -22,11 +22,12 @@ func main() {
 		api := slack.New(os.Getenv(key))
 		params := slack.PostMessageParameters{}
 		attachment := slack.Attachment{
-			Pretext: "2some pretext",
-			Text:    "3some text",
+			Pretext: "",
+			Text:    *say,
 		}
 		params.Attachments = []slack.Attachment{attachment}
-		_, _, _ = api.PostMessage(*id, "1Some text", params)
+		cid, ts, err := api.PostMessage(*id, "", params)
+		fmt.Println(cid, ts, err)
 
 		return
 	}
