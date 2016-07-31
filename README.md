@@ -15,6 +15,19 @@ from real history:
   487  ./ises -t 0 -id U0FRP3RCN -s test         # say test in that place
 ```
 
+to run:
+
+```
+set these env vars
+SLACK_TEAMS=2
+SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
+SLACK_TOKEN_0=xoxp-4422442222-3111111111-11111111118-11aeea211e
+
+you can get tokens:
+
+https://api.slack.com/docs/oauth-test-tokens
+```
+
 
 ```
 future ideas:
