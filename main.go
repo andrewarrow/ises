@@ -51,7 +51,7 @@ func main() {
 		key := fmt.Sprintf("SLACK_TOKEN_%d", 0)
 		api := slack.New(os.Getenv(key))
 		hp := slack.HistoryParameters{Oldest: "", Latest: "", Count: 10, Inclusive: false, Unreads: false}
-		h, err := api.GetChannelHistory(*id, hp)
+		h, err := api.GetIMHistory(*id, hp)
 		if err != nil {
 			fmt.Printf("%s\n", err)
 			return
