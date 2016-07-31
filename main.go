@@ -7,14 +7,32 @@ import "strconv"
 import "flag"
 
 var (
-	team = flag.String("team", "0", "team index zero based")
-	id   = flag.String("id", "0", "id")
+	team   = flag.String("team", "0", "team index zero based")
+	id     = flag.String("id", "0", "id")
+	people = flag.String("p", "0", "list people")
 )
 
 func main() {
 	flag.Parse()
+	slack_teams, _ := strconv.ParseInt(os.Getenv("SLACK_TEAMS"), 10, 64)
 
-	fmt.Println(*team)
+	if *people != "0" {
+		i := int64(0)
+		for {
+			key := fmt.Sprintf("SLACK_TOKEN_%d", i)
+			api := slack.New(os.Getenv(key))
+			users, _ := api.GetUsers()
+			for _, user := range users {
+				fmt.Println(i, user.Name)
+			}
+
+			i++
+			if i >= slack_teams {
+				break
+			}
+		}
+		return
+	}
 
 	if *id != "0" {
 		key := fmt.Sprintf("SLACK_TOKEN_%d", 0)
@@ -29,7 +47,6 @@ func main() {
 		return
 	}
 
-	slack_teams, _ := strconv.ParseInt(os.Getenv("SLACK_TEAMS"), 10, 64)
 	i := int64(0)
 	for {
 		key := fmt.Sprintf("SLACK_TOKEN_%d", i)
