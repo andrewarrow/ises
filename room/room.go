@@ -4,5 +4,17 @@ type RoomFinder struct {
 }
 
 func Recents() []int {
-	return []int{1, 2, 3}
+	s := NewSession()
+	i := int64(0)
+	for {
+		key := fmt.Sprintf("SLACK_TOKEN_%d", i)
+		fmt.Println(key)
+		api := slack.New(os.Getenv(key))
+
+		i++
+		if i >= slack_teams {
+			break
+		}
+	}
+
 }
