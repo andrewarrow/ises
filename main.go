@@ -79,6 +79,13 @@ func main() {
 		for _, group := range groups {
 			fmt.Println(group.ID, group.Name)
 		}
+		ims, err := api.GetIMChannels()
+		if err != nil {
+			fmt.Printf("%s\n", err)
+		}
+		for _, im := range ims {
+			fmt.Println(im.ID, im.User)
+		}
 
 		i++
 		if i >= slack_teams {
