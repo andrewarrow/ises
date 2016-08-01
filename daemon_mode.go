@@ -34,7 +34,8 @@ func handleRtm(rtm *slack.RTM, team string) {
 			case *slack.MessageEvent:
 				fmt.Printf("Message: %v %s\n", ev, team)
 			case *slack.PresenceChangeEvent:
-				fmt.Printf("Presence Change: %v %s\n", ev, team)
+				name := room.IdToString(ev.User, team)
+				fmt.Printf("Presence Change: %s %s\n", name, team)
 			}
 		}
 	}
