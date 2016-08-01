@@ -17,9 +17,26 @@ func handleSyncMode() {
 			}
 			filename := fmt.Sprintf("%s_%s", team.Index, r["room"])
 			//fmt.Println(filename)
+			lookForSay(filename, team, r)
 			handleFile(filename, team, r)
 		}
 	}
+}
+
+func lookForSay(filename string, team room.Team, room map[string]string) {
+	sayfile := "cache/" + filename + "/say"
+	_, err := os.Stat(sayfile)
+	if os.IsNotExist(err) {
+		return
+	}
+	f, _ := os.Open(sayfile)
+	//fmt.Println("wow ", err)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		fmt.Println("      " + scanner.Text())
+	}
+	f.Close()
+	os.Remove(sayfile)
 }
 
 func handleFile(filename string, team room.Team, room map[string]string) {
