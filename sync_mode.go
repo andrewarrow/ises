@@ -4,6 +4,7 @@ import "github.com/andrewarrow/ises/room"
 import "fmt"
 import "os"
 import "bufio"
+import "strings"
 
 func handleSyncMode() {
 	teams := room.GetTeams()
@@ -23,11 +24,16 @@ func findLatest(filename string) string {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
+	last := ""
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+		last = scanner.Text()
 	}
-
-	return ""
+	if last == "" {
+		return ""
+	}
+	tokens := strings.Split(last, "|")
+	fmt.Println(tokens[0])
+	return tokens[0]
 }
 
 func handleFile(filename string, team room.Team, room map[string]string) {
