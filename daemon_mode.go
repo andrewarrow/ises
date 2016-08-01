@@ -28,7 +28,14 @@ func handleRtm(rtm *slack.RTM, team string) {
 	for {
 		select {
 		case msg := <-rtm.IncomingEvents:
-			fmt.Print("Event Received: ", msg, team)
+			switch ev := msg.Data.(type) {
+			case *slack.HelloEvent:
+				// Ignore hello
+			case *slack.MessageEvent:
+				fmt.Printf("Message: %v %s\n", ev, team)
+			case *slack.PresenceChangeEvent:
+				fmt.Printf("Presence Change: %v %s\n", ev, team)
+			}
 		}
 	}
 
