@@ -7,11 +7,12 @@ var (
 	fsync   = flag.Bool("s", false, "sync mode")
 	fread   = flag.Bool("r", false, "read mode")
 	fdaemon = flag.Bool("d", false, "daemon mode")
+	flookup = flag.Bool("l", false, "fill lookup data")
 )
 
 func main() {
 	flag.Parse()
-	if *fsync == false && *fread == false && *fdaemon == false {
+	if *fsync == false && *fread == false && *fdaemon == false && *flookup == false {
 		fmt.Println("use --help")
 		return
 	}
@@ -28,6 +29,10 @@ func main() {
 	if *fdaemon == true {
 		handleDaemonMode()
 		return
+	}
+
+	if *flookup == true {
+		handleLookupMode()
 	}
 
 	fmt.Println("end")
