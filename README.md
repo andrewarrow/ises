@@ -3,20 +3,9 @@
 read and respond to slack messages from a command line
 
 ```
-from real history:
-  444  ./ises                                    # lists all conversations in all teams
-  445  ./ises -t 0 -id C0K5LNG2H                 # list message history from that id
-  458  ./ises -p 1                               # list all people in all teams
-  487  ./ises -t 0 -id U0FRP3RCN -s test         # say test in that place
-```
-
-to run:
-
-```
 go get github.com/andrewarrow/ises
 cd that dir
 go build
-./ises
 set these env vars
 SLACK_TEAMS=2
 SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
@@ -27,15 +16,13 @@ you can get test tokens:
 https://api.slack.com/docs/oauth-test-tokens
 
 or make real ones with generate.rb
-```
 
+./ises -s # to sync last 10 messages from every room to disk
+./ises -r # to read the most recent messages from every room in every team
 
-```
-future ideas:
-/ises u - unread
-/ises t - tail last file messages of x
-/ises s - speak
-/ises e - edit last message
+touch cache/0_roomname/mute     # this will mute this room from now on
+vi cache/1_otherim/say          # puts lines in this file u want to say in room, then sync again
+                                # say file is deleted after it's sent
 ```
 
 Where does ises name come from?
