@@ -32,14 +32,21 @@ func (t Team) Recents() []map[string]string {
 	return list
 }
 
-func (t Team) History(id string) []map[string]string {
+func (t Team) History(id, thing string) []map[string]string {
 	list := make([]map[string]string, 0)
-	if id == "123" {
-		m := make(map[string]string)
-		m["text"] = "hello"
-		m["time"] = "08:03"
-		m["who"] = "bob"
-		list = append(list, m)
+	hp := slack.HistoryParameters{Oldest: "", Latest: "", Count: 10, Inclusive: false, Unreads: false}
+	if thing == "c" {
+	} else if thing == "g" {
+	} else if thing == "i" {
+		history, err := t.Api.GetIMHistory(id, hp)
+		fmt.Println("api.GetIMHistory ", err)
+		for _, message := range history.Messages {
+			m := make(map[string]string)
+			m["text"] = message.Msg.Text
+			m["time"] = message.Msg.Timestamp
+			m["who"] = message.Msg.User
+			list = append(list, m)
+		}
 	}
 	return list
 }
@@ -53,7 +60,7 @@ func (t Team) Rooms() []map[string]string {
 		m := make(map[string]string)
 		m["room"] = channel.Name
 		m["id"] = channel.ID
-		m["type"] = "c"
+		m["thing"] = "c"
 		list = append(list, m)
 	}
 	groups, err := t.Api.GetGroups(false)
@@ -62,7 +69,7 @@ func (t Team) Rooms() []map[string]string {
 		m := make(map[string]string)
 		m["room"] = group.Name
 		m["id"] = group.ID
-		m["type"] = "g"
+		m["thing"] = "g"
 		list = append(list, m)
 	}
 
@@ -78,7 +85,7 @@ func (t Team) Rooms() []map[string]string {
 		m := make(map[string]string)
 		m["room"] = userMap[im.User]
 		m["id"] = im.ID
-		m["type"] = "i"
+		m["thing"] = "i"
 		list = append(list, m)
 	}
 
