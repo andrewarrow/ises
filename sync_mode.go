@@ -3,8 +3,6 @@ package main
 import "github.com/andrewarrow/ises/room"
 import "fmt"
 import "os"
-import "bufio"
-import "strings"
 
 func handleSyncMode() {
 	teams := room.GetTeams()
@@ -21,33 +19,19 @@ func handleSyncMode() {
 	}
 }
 
-func findLatest(filename string) string {
-	f, err := os.Open("cache/" + filename)
-	fmt.Println("findLatest ", err)
-	defer f.Close()
-
-	scanner := bufio.NewScanner(f)
-	last := ""
-	for scanner.Scan() {
-		last = scanner.Text()
-	}
-	if last == "" {
-		return ""
-	}
-	tokens := strings.Split(last, "|")
-	fmt.Println(tokens[0])
-	return tokens[0]
-}
-
 func handleFile(filename string, team room.Team, room map[string]string) {
-	latest := "" //findLatest(filename)
-	history := team.History(room["id"], room["thing"], latest)
-	if len(history) == 0 {
+	err := os.Mkdir("cache/"+filename, os.ModePerm)
+	fmt.Println("mkdir ", err)
+	_, err = os.Stat("cache/" + filename + "/mute")
+	if !os.IsNotExist(err) {
+		fmt.Println("MUTE ", filename)
 		return
 	}
 
-	err := os.Mkdir("cache/"+filename, os.ModePerm)
-	fmt.Println("mkdir ", err)
+	history := team.History(room["id"], room["thing"], "")
+	if len(history) == 0 {
+		return
+	}
 
 	i := len(history) - 1
 	for {
