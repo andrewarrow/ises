@@ -16,16 +16,16 @@ func handleSyncMode() {
 				continue
 			}
 			filename := fmt.Sprintf("%s_%s", team.Index, r["room"])
-			fmt.Println(filename)
+			//fmt.Println(filename)
 			handleFile(filename, team, r)
 		}
 	}
 }
 
 func handleFile(filename string, team room.Team, room map[string]string) {
-	err := os.Mkdir("cache/"+filename, os.ModePerm)
-	fmt.Println("mkdir ", err)
-	_, err = os.Stat("cache/" + filename + "/mute")
+	_ = os.Mkdir("cache/"+filename, os.ModePerm)
+	//fmt.Println("mkdir ", err)
+	_, err := os.Stat("cache/" + filename + "/mute")
 	if !os.IsNotExist(err) {
 		fmt.Println("MUTE ", filename)
 		return
@@ -43,12 +43,11 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 		fstr := "cache/" + filename + "/" + h["time"] + "_" + h["who"]
 		_, err := os.Stat(fstr)
 		if os.IsNotExist(err) {
-			f, err := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0600)
-			fmt.Println("open file ", err)
-			defer f.Close()
-
-			_, err = f.WriteString(h["text"])
-			fmt.Println("f.WriteString ", err)
+			f, _ := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0600)
+			//fmt.Println("open file ", err)
+			_, _ = f.WriteString(h["text"])
+			//fmt.Println("f.WriteString ", err)
+			f.Close()
 		}
 
 		i--

@@ -50,8 +50,8 @@ func handleReadMode() {
 		fmt.Println(c.number, t)
 		fmt.Println("   " + c.filename)
 
-		f, err := os.Open("cache/" + c.filename)
-		fmt.Println("wow ", err)
+		f, _ := os.Open("cache/" + c.filename)
+		//fmt.Println("wow ", err)
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			fmt.Println("      " + scanner.Text())

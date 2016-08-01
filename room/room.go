@@ -36,8 +36,8 @@ func (t Team) History(id, thing, latest string) []map[string]string {
 	list := make([]map[string]string, 0)
 	hp := slack.HistoryParameters{Oldest: "", Latest: latest, Count: 10, Inclusive: false, Unreads: false}
 	if thing == "c" {
-		history, err := t.Api.GetChannelHistory(id, hp)
-		fmt.Println("ch ", err)
+		history, _ := t.Api.GetChannelHistory(id, hp)
+		//fmt.Println("ch ", err)
 		for _, message := range history.Messages {
 			m := make(map[string]string)
 			m["text"] = message.Msg.Text
@@ -46,8 +46,8 @@ func (t Team) History(id, thing, latest string) []map[string]string {
 			list = append(list, m)
 		}
 	} else if thing == "g" {
-		history, err := t.Api.GetGroupHistory(id, hp)
-		fmt.Println("gh ", err)
+		history, _ := t.Api.GetGroupHistory(id, hp)
+		//fmt.Println("gh ", err)
 		for _, message := range history.Messages {
 			m := make(map[string]string)
 			m["text"] = message.Msg.Text
@@ -56,8 +56,8 @@ func (t Team) History(id, thing, latest string) []map[string]string {
 			list = append(list, m)
 		}
 	} else if thing == "i" {
-		history, err := t.Api.GetIMHistory(id, hp)
-		fmt.Println("api.GetIMHistory ", err)
+		history, _ := t.Api.GetIMHistory(id, hp)
+		//fmt.Println("api.GetIMHistory ", err)
 		for _, message := range history.Messages {
 			m := make(map[string]string)
 			m["text"] = message.Msg.Text
