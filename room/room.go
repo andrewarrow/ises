@@ -7,6 +7,7 @@ import "fmt"
 
 type Team struct {
 	Api   *slack.Client
+	Rtm   *slack.RTM
 	Index string
 }
 
@@ -128,6 +129,7 @@ func GetTeams() []Team {
 		team := Team{}
 		team.Index = fmt.Sprintf("%d", i)
 		team.Api = slack.New(os.Getenv(key))
+		team.Rtm = team.Api.NewRTM()
 		//fmt.Println(team)
 		teams = append(teams, team)
 
