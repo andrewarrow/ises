@@ -5,8 +5,9 @@ import "io/ioutil"
 import "strings"
 import "strconv"
 import "sort"
-
-//import "time"
+import "time"
+import "bufio"
+import "os"
 
 type Cache struct {
 	number   int64
@@ -40,6 +41,16 @@ func handleReadMode() {
 	}
 	sort.Sort(ByAge(list))
 	for _, c := range list {
-		fmt.Println(c.number)
+		t := time.Unix(c.number, 0)
+		fmt.Println(c.number, t)
+		fmt.Println("   " + c.filename)
+
+		f, err := os.Open("cache/" + c.filename)
+		fmt.Println("wow ", err)
+		defer f.Close()
+		scanner := bufio.NewScanner(f)
+		for scanner.Scan() {
+			fmt.Println("      " + scanner.Text())
+		}
 	}
 }
