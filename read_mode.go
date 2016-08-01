@@ -8,6 +8,7 @@ import "sort"
 import "time"
 import "bufio"
 import "os"
+import "github.com/fatih/color"
 
 type Cache struct {
 	number   int64
@@ -21,6 +22,7 @@ func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 
 func handleReadMode() {
+	color.Cyan("READ")
 	list := make([]Cache, 0)
 	files, _ := ioutil.ReadDir("cache/")
 	for _, f := range files {
@@ -45,10 +47,11 @@ func handleReadMode() {
 		}
 	}
 	sort.Sort(ByAge(list))
+	d := color.New(color.FgCyan, color.Bold)
 	for _, c := range list {
 		t := time.Unix(c.number, 0)
 		fmt.Println(c.number, t)
-		fmt.Println("   " + c.filename)
+		d.Printf("   " + c.filename + "\n")
 
 		f, _ := os.Open("cache/" + c.filename)
 		//fmt.Println("wow ", err)
