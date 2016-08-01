@@ -32,6 +32,14 @@ func (t Team) Recents() []map[string]string {
 	return list
 }
 
+func (t Team) Say(id, say string) error {
+	params := slack.PostMessageParameters{}
+	//attachment := slack.Attachment{ Pretext: "", Text:    *say, }
+	//params.Attachments = []slack.Attachment{attachment}
+	_, _, err := t.Api.PostMessage(id, say, params)
+	return err
+}
+
 func (t Team) History(id, thing, latest string) []map[string]string {
 	list := make([]map[string]string, 0)
 	hp := slack.HistoryParameters{Oldest: "", Latest: latest, Count: 10, Inclusive: false, Unreads: false}

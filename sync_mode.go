@@ -3,6 +3,7 @@ package main
 import "github.com/andrewarrow/ises/room"
 import "fmt"
 import "os"
+import "bufio"
 
 func handleSyncMode() {
 	err := os.Mkdir("cache", os.ModePerm)
@@ -33,7 +34,7 @@ func lookForSay(filename string, team room.Team, room map[string]string) {
 	//fmt.Println("wow ", err)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		fmt.Println("      " + scanner.Text())
+		team.Say(room["id"], scanner.Text())
 	}
 	f.Close()
 	os.Remove(sayfile)
