@@ -32,7 +32,7 @@ func (t Team) Recents() []map[string]string {
 	return list
 }
 
-func (t Team) History(id, thing string) []map[string]string {
+func (t Team) History(id, thing, latest string) []map[string]string {
 	list := make([]map[string]string, 0)
 	hp := slack.HistoryParameters{Oldest: "", Latest: "", Count: 10, Inclusive: false, Unreads: false}
 	if thing == "c" {
