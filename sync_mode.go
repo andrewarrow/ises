@@ -11,6 +11,9 @@ func handleSyncMode() {
 	for _, team := range teams {
 		rooms := team.Rooms()
 		for _, r := range rooms {
+			if r["room"] == "slackbot" {
+				continue
+			}
 			filename := fmt.Sprintf("%s_%s", team.Index, r["room"])
 			fmt.Println(filename)
 			handleFile(filename, team, r)
@@ -37,22 +40,30 @@ func findLatest(filename string) string {
 }
 
 func handleFile(filename string, team room.Team, room map[string]string) {
-	latest := findLatest(filename)
+	latest := "" //findLatest(filename)
 	history := team.History(room["id"], room["thing"], latest)
 	if len(history) == 0 {
 		return
 	}
 
-	f, err := os.OpenFile("cache/"+filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
-	fmt.Println("open file ", err)
-	defer f.Close()
+	err := os.Mkdir("cache/"+filename, os.ModeDir)
+	fmt.Println("mkdir ", err)
 
 	i := len(history) - 1
 	for {
 		h := history[i]
-		str := fmt.Sprintf("%s|%s|%s\n", h["time"], h["who"], h["text"])
-		_, err = f.WriteString(str)
-		fmt.Println("f.WriteString ", err)
+
+		fstr := "cache/" + filename + "/" + h["time"] + "_" + h["who"]
+		_, err := os.Stat(fstr)
+		if os.IsNotExist(err) {
+			f, err := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0600)
+			fmt.Println("open file ", err)
+			defer f.Close()
+
+			_, err = f.WriteString(h["text"])
+			fmt.Println("f.WriteString ", err)
+		}
+
 		i--
 		if i < 0 {
 			break
