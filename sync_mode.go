@@ -24,9 +24,15 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 	fmt.Println("open file ", err)
 	defer f.Close()
 
-	for _, h := range history {
-		str := fmt.Sprintf("%s|%s|%s", h["time"], h["who"], h["text"])
+	i := len(history) - 1
+	for {
+		h := history[i]
+		str := fmt.Sprintf("%s|%s|%s\n", h["time"], h["who"], h["text"])
 		_, err = f.WriteString(str)
 		fmt.Println("f.WriteString ", err)
+		i--
+		if i < 0 {
+			break
+		}
 	}
 }
