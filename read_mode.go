@@ -47,10 +47,10 @@ func handleReadMode() {
 
 		f, err := os.Open("cache/" + c.filename)
 		fmt.Println("wow ", err)
-		defer f.Close()
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			fmt.Println("      " + scanner.Text())
 		}
+		f.Close()
 	}
 }
