@@ -5,6 +5,9 @@ import "fmt"
 import "os"
 
 func handleSyncMode() {
+	err := os.Mkdir("cache", os.ModePerm)
+	fmt.Println("mkdir ", err)
+
 	teams := room.GetTeams()
 	for _, team := range teams {
 		rooms := team.Rooms()
