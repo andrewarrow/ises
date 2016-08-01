@@ -23,6 +23,10 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 	f, err := os.OpenFile("cache/"+filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
 	fmt.Println("open file ", err)
 	defer f.Close()
-	_, err = f.WriteString("test")
-	fmt.Println("write file ", err)
+
+	for _, h := range history {
+		str := fmt.Sprintf("%s|%s|%s", h["time"], h["who"], h["text"])
+		_, err = f.WriteString(str)
+		fmt.Println("f.WriteString ", err)
+	}
 }
