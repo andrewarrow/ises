@@ -50,7 +50,7 @@ func handleReadMode() {
 	d := color.New(color.FgCyan, color.Bold)
 	for _, c := range list {
 		t := time.Unix(c.number, 0)
-		fmt.Println(c.number, t)
+		color.Magenta(fmt.Sprintf("%s", t))
 		d.Printf("   " + c.filename + "\n")
 
 		f, _ := os.Open("cache/" + c.filename)
