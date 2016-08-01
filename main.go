@@ -10,14 +10,19 @@ import "flag"
 var (
 	ft    = flag.String("t", "0", "team index zero based")
 	fid   = flag.String("id", "0", "id")
-	fmode = flag.Bool("q", false, "quick mode")
+	fquick = flag.Bool("q", false, "quick mode")
+	fsync = flag.Bool("s", false, "sync mode")
 )
 
 func main() {
 	flag.Parse()
 	//slack_teams, _ := strconv.ParseInt(os.Getenv("SLACK_TEAMS"), 10, 64)
-	if *fmode == true {
+	if *fquick == true {
 		handleQuickMode()
+		return
+	}
+	if *fsync == true {
+		handleSyncMode()
 		return
 	}
 
