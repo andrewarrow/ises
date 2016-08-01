@@ -48,7 +48,6 @@ func (t Team) History(id, thing, latest string) []map[string]string {
 	} else if thing == "g" {
 		history, err := t.Api.GetGroupHistory(id, hp)
 		fmt.Println("gh ", err)
-		fmt.Println("d ", history.Messages)
 		for _, message := range history.Messages {
 			m := make(map[string]string)
 			m["text"] = message.Msg.Text
