@@ -2,6 +2,7 @@ package main
 
 import "github.com/andrewarrow/ises/room"
 import "fmt"
+import "os"
 
 func handleSyncMode() {
 	teams := room.GetTeams()
@@ -18,4 +19,9 @@ func handleSyncMode() {
 func handleFile(filename string, team room.Team, room map[string]string) {
 	//history := team.History(room["id"])
 	//fmt.Println("hi", history)
+	f, err := os.OpenFile("cache/"+filename, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+	fmt.Println("open file ", err)
+	defer f.Close()
+	_, err = f.WriteString("test")
+	fmt.Println("write file ", err)
 }
