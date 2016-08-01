@@ -8,10 +8,11 @@ import "fmt"
 import "flag"
 
 var (
-	ft    = flag.String("t", "0", "team index zero based")
-	fid   = flag.String("id", "0", "id")
+	ft     = flag.String("t", "0", "team index zero based")
+	fid    = flag.String("id", "0", "id")
 	fquick = flag.Bool("q", false, "quick mode")
-	fsync = flag.Bool("s", false, "sync mode")
+	fsync  = flag.Bool("s", false, "sync mode")
+	fread  = flag.Bool("r", false, "read mode")
 )
 
 func main() {
@@ -23,6 +24,10 @@ func main() {
 	}
 	if *fsync == true {
 		handleSyncMode()
+		return
+	}
+	if *fread == true {
+		handleReadMode()
 		return
 	}
 
