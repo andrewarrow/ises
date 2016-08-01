@@ -4,20 +4,42 @@ import "fmt"
 import "io/ioutil"
 import "strings"
 import "strconv"
-import "time"
+import "sort"
+
+//import "time"
+
+type Cache struct {
+	number   int64
+	filename string
+}
+
+type ByAge []Cache
+
+func (a ByAge) Len() int           { return len(a) }
+func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 
 func handleReadMode() {
+	list := make([]Cache, 0)
 	files, _ := ioutil.ReadDir("cache/")
 	for _, f := range files {
-		fmt.Println(f.Name())
+		//fmt.Println(f.Name())
 		subfiles, _ := ioutil.ReadDir("cache/" + f.Name())
 		for _, sub := range subfiles {
 			tokens := strings.Split(sub.Name(), "_")
-			fmt.Println(tokens[0])
+			//fmt.Println(tokens[0])
 			subtokens := strings.Split(tokens[0], ".")
 			number, _ := strconv.ParseInt(subtokens[0], 10, 0)
-			t := time.Unix(int64(number), 0)
-			fmt.Println(t)
+			c := Cache{}
+			c.number = number
+			c.filename = f.Name() + "/" + sub.Name()
+			list = append(list, c)
+			//t := time.Unix(number, 0)
+			//fmt.Println(t)
 		}
+	}
+	sort.Sort(ByAge(list))
+	for _, c := range list {
+		fmt.Println(c.number)
 	}
 }
