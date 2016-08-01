@@ -65,11 +65,18 @@ func (t Team) Rooms() []map[string]string {
 		m["type"] = "g"
 		list = append(list, m)
 	}
+
+	userMap := make(map[string]string)
+	users, err := t.Api.GetUsers()
+	fmt.Println("getting users ", err)
+	for _, user := range users {
+		userMap[user.ID] = user.Name
+	}
 	ims, err := t.Api.GetIMChannels()
 	fmt.Println("getting ims ", err)
 	for _, im := range ims {
 		m := make(map[string]string)
-		m["room"] = "imconvo"
+		m["room"] = userMap[im.User]
 		m["id"] = im.ID
 		m["type"] = "i"
 		list = append(list, m)
