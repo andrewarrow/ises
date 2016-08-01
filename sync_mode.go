@@ -46,7 +46,7 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 		return
 	}
 
-	err := os.Mkdir("cache/"+filename, os.ModeDir)
+	err := os.Mkdir("cache/"+filename, os.ModePerm)
 	fmt.Println("mkdir ", err)
 
 	i := len(history) - 1
