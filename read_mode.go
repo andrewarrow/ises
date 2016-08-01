@@ -25,6 +25,11 @@ func handleReadMode() {
 	files, _ := ioutil.ReadDir("cache/")
 	for _, f := range files {
 		//fmt.Println(f.Name())
+		_, err := os.Stat("cache/" + f.Name() + "/mute")
+		if !os.IsNotExist(err) {
+			fmt.Println("MUTE ", f.Name())
+			continue
+		}
 		subfiles, _ := ioutil.ReadDir("cache/" + f.Name())
 		for _, sub := range subfiles {
 			tokens := strings.Split(sub.Name(), "_")
