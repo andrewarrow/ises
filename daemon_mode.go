@@ -30,6 +30,7 @@ func handleRtm(rtm *slack.RTM, team string) {
 		case msg := <-rtm.IncomingEvents:
 			switch ev := msg.Data.(type) {
 			case *slack.HelloEvent:
+				fmt.Println(ev)
 				// Ignore hello
 			case *slack.MessageEvent:
 				name := room.IdToString(ev.Msg.Channel, team)
@@ -39,6 +40,7 @@ func handleRtm(rtm *slack.RTM, team string) {
 				h["who"] = ev.Msg.User
 				filename := fmt.Sprintf("%s_%s", team, name)
 				room.WriteMessageToDisk(filename, h)
+				room.MarkRoomWithRedDot(name, team)
 				fmt.Printf("Message: %s %s\n", name, team)
 			case *slack.PresenceChangeEvent:
 				name := room.IdToString(ev.User, team)
