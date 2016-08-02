@@ -1,9 +1,11 @@
 package room
 
 import "io/ioutil"
+import "os"
 
 func IdToString(id, team string) string {
-	fstr := "id_lookup/" + team + "/" + id
+	root := os.Getenv("ISES_ROOT")
+	fstr := root + "/id_lookup/" + team + "/" + id
 	b, err := ioutil.ReadFile(fstr)
 	if err != nil {
 		return "[NEW]"
@@ -12,7 +14,8 @@ func IdToString(id, team string) string {
 }
 
 func StringToId(name, team string) string {
-	fstr := "reverse_lookup/" + team + "/" + name
+	root := os.Getenv("ISES_ROOT")
+	fstr := root + "/reverse_lookup/" + team + "/" + name
 	b, err := ioutil.ReadFile(fstr)
 	if err != nil {
 		return "oops"
