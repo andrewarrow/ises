@@ -22,16 +22,23 @@ func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 
 func handleReadMode() {
-	color.Cyan("READ")
+	e_team := os.Getenv("TEAM")
+	e_room := os.Getenv("ROOM")
+
 	list := make([]Cache, 0)
 	files, _ := ioutil.ReadDir(IsesRoot + "/cache/")
 	for _, f := range files {
 		//fmt.Println(f.Name())
-		_, err := os.Stat("cache/" + f.Name() + "/mute")
+		_, err := os.Stat(IsesRoot + "/cache/" + f.Name() + "/mute")
 		if !os.IsNotExist(err) {
-			fmt.Println("MUTE ", f.Name())
+			//fmt.Println("MUTE ", f.Name())
 			continue
 		}
+
+		if e_room != "" && f.Name() != fmt.Sprintf("%s_%s", e_team, e_room) {
+			continue
+		}
+
 		subfiles, _ := ioutil.ReadDir(IsesRoot + "/cache/" + f.Name())
 		for _, sub := range subfiles {
 			tokens := strings.Split(sub.Name(), "_")
