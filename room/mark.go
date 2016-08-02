@@ -17,7 +17,7 @@ func MarkRoomWithRedDot(name, team string) {
 
 	fstr := fmt.Sprintf("ui/%s_%s", alpha[size], name)
 	cmd := fmt.Sprintf("TEAM=%s ROOM=%s ../ises -r", team, name)
-	f, _ := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0660)
+	f, _ := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0755)
 	_, _ = f.WriteString(cmd)
 	f.Close()
 
