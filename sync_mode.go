@@ -40,7 +40,7 @@ func lookForSay(filename string, team room.Team, room map[string]string) {
 	os.Remove(sayfile)
 }
 
-func handleFile(filename string, team room.Team, room map[string]string) {
+func handleFile(filename string, team room.Team, r map[string]string) {
 	_ = os.Mkdir("cache/"+filename, os.ModePerm)
 	//fmt.Println("mkdir ", err)
 	_, err := os.Stat("cache/" + filename + "/mute")
@@ -49,7 +49,7 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 		return
 	}
 
-	history := team.History(room["id"], room["thing"], "")
+	history := team.History(r["id"], r["thing"], "")
 	if len(history) == 0 {
 		return
 	}
@@ -58,15 +58,7 @@ func handleFile(filename string, team room.Team, room map[string]string) {
 	for {
 		h := history[i]
 
-		fstr := "cache/" + filename + "/" + h["time"] + "_" + h["who"]
-		_, err := os.Stat(fstr)
-		if os.IsNotExist(err) {
-			f, _ := os.OpenFile(fstr, os.O_CREATE|os.O_WRONLY, 0600)
-			//fmt.Println("open file ", err)
-			_, _ = f.WriteString(h["text"])
-			//fmt.Println("f.WriteString ", err)
-			f.Close()
-		}
+		room.WriteMessageToDisk(filename, h)
 
 		i--
 		if i < 0 {

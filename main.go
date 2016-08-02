@@ -2,12 +2,14 @@ package main
 
 import "fmt"
 import "flag"
+import "os"
 
 var (
-	fsync   = flag.Bool("s", false, "sync mode")
-	fread   = flag.Bool("r", false, "read mode")
-	fdaemon = flag.Bool("d", false, "daemon mode")
-	flookup = flag.Bool("l", false, "fill lookup data")
+	IsesRoot string
+	fsync    = flag.Bool("s", false, "sync mode")
+	fread    = flag.Bool("r", false, "read mode")
+	fdaemon  = flag.Bool("d", false, "daemon mode")
+	flookup  = flag.Bool("l", false, "fill lookup data")
 )
 
 func main() {
@@ -16,6 +18,8 @@ func main() {
 		fmt.Println("use --help")
 		return
 	}
+
+	IsesRoot = os.Getenv("ISES_ROOT")
 
 	if *fsync == true {
 		handleSyncMode()

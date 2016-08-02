@@ -24,7 +24,7 @@ func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 func handleReadMode() {
 	color.Cyan("READ")
 	list := make([]Cache, 0)
-	files, _ := ioutil.ReadDir("cache/")
+	files, _ := ioutil.ReadDir(IsesRoot + "/cache/")
 	for _, f := range files {
 		//fmt.Println(f.Name())
 		_, err := os.Stat("cache/" + f.Name() + "/mute")
@@ -32,7 +32,7 @@ func handleReadMode() {
 			fmt.Println("MUTE ", f.Name())
 			continue
 		}
-		subfiles, _ := ioutil.ReadDir("cache/" + f.Name())
+		subfiles, _ := ioutil.ReadDir(IsesRoot + "/cache/" + f.Name())
 		for _, sub := range subfiles {
 			tokens := strings.Split(sub.Name(), "_")
 			//fmt.Println(tokens[0])
@@ -53,7 +53,7 @@ func handleReadMode() {
 		color.Magenta(fmt.Sprintf("%s", t))
 		d.Printf("   " + c.filename + "\n")
 
-		f, _ := os.Open("cache/" + c.filename)
+		f, _ := os.Open(IsesRoot + "/cache/" + c.filename)
 		//fmt.Println("wow ", err)
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
