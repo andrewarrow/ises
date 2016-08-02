@@ -35,6 +35,7 @@ func (t Team) Recents() []map[string]string {
 
 func (t Team) Say(id, say string) error {
 	params := slack.PostMessageParameters{}
+	params.AsUser = true
 	//attachment := slack.Attachment{ Pretext: "", Text:    *say, }
 	//params.Attachments = []slack.Attachment{attachment}
 	_, _, err := t.Api.PostMessage(id, say, params)
