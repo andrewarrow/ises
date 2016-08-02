@@ -23,6 +23,9 @@ or make real ones with generate.rb
 touch cache/0_roomname/mute     # this will mute this room from now on
 vi cache/1_otherim/say          # puts lines in this file u want to say in room, then sync again
                                 # say file is deleted after it's sent
+
+./ises -d # run in daemon mode using web sockets
+          # new "red dots" are placed in ui/ directory that you can ls
 ```
 
 Where does ises name come from?
