@@ -9,6 +9,7 @@ import "time"
 import "bufio"
 import "os"
 import "github.com/fatih/color"
+import "github.com/andrewarrow/ises/room"
 
 type Cache struct {
 	number   int64
@@ -24,6 +25,15 @@ func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 func handleReadMode() {
 	e_team := os.Getenv("TEAM")
 	e_room := os.Getenv("ROOM")
+	e_say := os.Getenv("S")
+
+	if e_say != "" {
+		teams := room.GetTeams()
+		tindex, _ := strconv.ParseInt(e_team, 10, 0)
+		team := teams[tindex]
+		rid := room.StringToId(e_room, e_team)
+		team.Say(rid, e_say)
+	}
 
 	list := make([]Cache, 0)
 	files, _ := ioutil.ReadDir(IsesRoot + "/cache/")

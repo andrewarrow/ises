@@ -24,7 +24,7 @@ func handleSyncMode() {
 	}
 }
 
-func lookForSay(filename string, team room.Team, room map[string]string) {
+func lookForSay(filename string, team room.Team, r map[string]string) {
 	sayfile := "cache/" + filename + "/say"
 	_, err := os.Stat(sayfile)
 	if os.IsNotExist(err) {
@@ -34,7 +34,7 @@ func lookForSay(filename string, team room.Team, room map[string]string) {
 	//fmt.Println("wow ", err)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		team.Say(room["id"], scanner.Text())
+		team.Say(r["id"], scanner.Text())
 	}
 	f.Close()
 	os.Remove(sayfile)
