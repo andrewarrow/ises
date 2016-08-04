@@ -10,7 +10,6 @@ var (
 func main() {
 	stdscr, _ := gc.Init()
 	row, _ := stdscr.MaxYX()
-	defer gc.End()
 
 	stdscr.MovePrint(row-1, 0, "> ")
 	stdscr.Refresh()
@@ -19,15 +18,18 @@ func main() {
 	for {
 		c := stdscr.GetChar()
 		if c == 10 || c == 13 {
-			stdscr.MovePrintf(10, 10, "%s", line)
+			buff = make([]byte, 0)
+			stdscr.MovePrintf(10, 10, "|%s|%d", line, len(line))
 			stdscr.MovePrint(row-1, 0, "> ")
 			stdscr.Refresh()
 			if line == "quit" {
+				gc.End()
 				fmt.Println("")
 				break
 			}
+		} else {
+			buff = append(buff, byte(c))
+			line = string(buff)
 		}
-		buff = append(buff, byte(c))
-		line = string(buff)
 	}
 }
