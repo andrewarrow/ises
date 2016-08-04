@@ -9,6 +9,7 @@ var (
 
 func main() {
 	stdscr, _ := gc.Init()
+	gc.Echo(false)
 	row, _ := stdscr.MaxYX()
 
 	stdscr.MovePrint(row-1, 0, "> ")
@@ -17,9 +18,11 @@ func main() {
 	line := ""
 	for {
 		c := stdscr.GetChar()
+		//stdscr.MovePrintf(15, 10, "%d", c)
 		if c == 10 || c == 13 {
+			stdscr.MovePrintf(10, 10, "%s", line)
 			buff = make([]byte, 0)
-			stdscr.MovePrintf(10, 10, "|%s|%d", line, len(line))
+			stdscr.MovePrint(row-1, 0, "                                                                   ")
 			stdscr.MovePrint(row-1, 0, "> ")
 			stdscr.Refresh()
 			if line == "quit" {
@@ -28,8 +31,14 @@ func main() {
 				break
 			}
 		} else {
-			buff = append(buff, byte(c))
-			line = string(buff)
+			if c == 127 {
+				buff = buff[0 : len(buff)-1]
+			} else {
+				buff = append(buff, byte(c))
+				line = string(buff)
+			}
+			stdscr.MovePrint(row-1, 0, "> "+line)
+			stdscr.Refresh()
 		}
 	}
 }
