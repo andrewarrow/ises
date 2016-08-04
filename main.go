@@ -35,12 +35,14 @@ func main() {
 				if len(buff) > 0 {
 					buff = buff[0 : len(buff)-1]
 					line = string(buff)
+					stdscr.MovePrint(row-1, 0, "> "+line+" ")
+					stdscr.MovePrint(row-1, len(line)+2, "")
 				}
 			} else {
 				buff = append(buff, byte(c))
 				line = string(buff)
+				stdscr.MovePrint(row-1, 0, "> "+line)
 			}
-			stdscr.MovePrint(row-1, 0, "> "+line)
 			stdscr.Refresh()
 		}
 	}
