@@ -32,7 +32,10 @@ func main() {
 			}
 		} else {
 			if c == 127 {
-				buff = buff[0 : len(buff)-1]
+				if len(buff) > 0 {
+					buff = buff[0 : len(buff)-1]
+					line = string(buff)
+				}
 			} else {
 				buff = append(buff, byte(c))
 				line = string(buff)
