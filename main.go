@@ -1,43 +1,33 @@
 package main
 
 import "fmt"
-import "flag"
-import "os"
+import gc "github.com/rthornton128/goncurses"
 
 var (
 	IsesRoot string
-	fsync    = flag.Bool("s", false, "sync mode")
-	fread    = flag.Bool("r", false, "read mode")
-	fdaemon  = flag.Bool("d", false, "daemon mode")
-	flookup  = flag.Bool("l", false, "fill lookup data")
 )
 
 func main() {
-	flag.Parse()
-	if *fsync == false && *fread == false && *fdaemon == false && *flookup == false {
-		fmt.Println("use --help")
-		return
-	}
+	stdscr, _ := gc.Init()
+	row, _ := stdscr.MaxYX()
+	defer gc.End()
 
-	IsesRoot = os.Getenv("ISES_ROOT")
-
-	if *fsync == true {
-		handleSyncMode()
-		return
+	stdscr.MovePrint(row-1, 0, "> ")
+	stdscr.Refresh()
+	buff := make([]byte, 0)
+	line := ""
+	for {
+		c := stdscr.GetChar()
+		if c == 10 || c == 13 {
+			stdscr.MovePrintf(10, 10, "%s", line)
+			stdscr.MovePrint(row-1, 0, "> ")
+			stdscr.Refresh()
+			if line == "quit" {
+				fmt.Println("")
+				break
+			}
+		}
+		buff = append(buff, byte(c))
+		line = string(buff)
 	}
-	if *fread == true {
-		handleReadMode()
-		return
-	}
-
-	if *fdaemon == true {
-		handleDaemonMode()
-		return
-	}
-
-	if *flookup == true {
-		handleLookupMode()
-	}
-
-	fmt.Println("end")
 }
