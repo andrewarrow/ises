@@ -18,13 +18,18 @@ var (
 	curPos   int
 )
 
-func thready(row int) {
+func thready(maxrows int) {
 	for {
 		time.Sleep(time.Millisecond * 100)
-		for row, h := range history {
-			stdscr.MovePrint(row, 0, h)
+		display := history[0:len(history)]
+		limit := maxrows - 5
+		if len(history) > limit {
+			display = history[len(history)-limit : len(history)]
 		}
-		stdscr.MovePrint(row-1, curPos+2, "")
+		for r, h := range display {
+			stdscr.MovePrint(r, 0, h)
+		}
+		stdscr.MovePrint(maxrows-1, curPos+2, "")
 		stdscr.Refresh()
 	}
 }
