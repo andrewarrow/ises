@@ -49,7 +49,8 @@ func handleRtmInCurses(rtm *slack.RTM, team string) {
 				filename := fmt.Sprintf("%s_%s", team, name)
 				room.WriteMessageToDisk(filename, h)
 				if name == rid {
-					history = append(history, ev.Msg.Text)
+					who := room.IdToString(ev.Msg.User, team)
+					history = append(history, who+"| "+ev.Msg.Text)
 				}
 			}
 		}
@@ -80,8 +81,8 @@ func main() {
 	}
 
 	history = make([]string, 0)
-	history = append(history, team_str)
-	history = append(history, rid)
+	//history = append(history, team_str)
+	//history = append(history, rid)
 	stdscr, _ = gc.Init()
 	row, _ := stdscr.MaxYX()
 	go thready(row)
