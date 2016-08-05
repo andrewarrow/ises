@@ -3,31 +3,80 @@ package main
 import "fmt"
 import gc "github.com/rthornton128/goncurses"
 import "time"
+import "os"
+import "github.com/nlopes/slack"
+import "github.com/andrewarrow/ises/room"
+import "strings"
 
 var (
 	IsesRoot string
 	stdscr   *gc.Window
 	history  []string
+	rid      string
 )
 
-func thready() {
+func thready(row int) {
 	for {
 		time.Sleep(time.Second)
 		for row, h := range history {
 			stdscr.MovePrint(row, 0, h)
 		}
+		stdscr.MovePrint(row-1, 2, "")
 		stdscr.Refresh()
 	}
 }
 
+func handleRtmInCurses(rtm *slack.RTM, team string) {
+
+	for {
+		select {
+		case msg := <-rtm.IncomingEvents:
+			switch ev := msg.Data.(type) {
+			case *slack.MessageEvent:
+				name := room.IdToString(ev.Msg.Channel, team)
+				h := make(map[string]string)
+				h["text"] = ev.Msg.Text
+				h["time"] = ev.Msg.Timestamp
+				h["who"] = ev.Msg.User
+				filename := fmt.Sprintf("%s_%s", team, name)
+				room.WriteMessageToDisk(filename, h)
+				if name == rid {
+					history = append(history, ev.Msg.Text)
+				}
+			}
+		}
+	}
+
+}
+
 func main() {
+	args := os.Args[1:]
+	if len(args) == 0 {
+		fmt.Println("./ises rid")
+		return
+	}
+	tokens := strings.Split(args[0], ".")
+	team_str := tokens[0]
+	rid = tokens[1]
+
+	teams := room.GetTeams()
+	for _, team := range teams {
+		if team_str != team.Index {
+			continue
+		}
+		go team.Rtm.ManageConnection()
+		go handleRtmInCurses(team.Rtm, team.Index)
+	}
+
 	history = make([]string, 0)
+	history = append(history, team_str)
+	history = append(history, rid)
 	stdscr, _ = gc.Init()
-	go thready()
+	row, _ := stdscr.MaxYX()
+	go thready(row)
 	gc.Echo(false)
 	//gc.Raw(true)
 	stdscr.Keypad(true)
-	row, _ := stdscr.MaxYX()
 
 	stdscr.MovePrint(row-1, 0, "> ")
 	stdscr.Refresh()
