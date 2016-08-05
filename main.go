@@ -51,6 +51,9 @@ func handleRtmInCurses(rtm *slack.RTM, team string) {
 				if name == rid {
 					who := room.IdToString(ev.Msg.User, team)
 					history = append(history, who+"| "+ev.Msg.Text)
+				} else {
+					who := room.IdToString(ev.Msg.User, team)
+					history = append(history, name+"]"+who+"| "+ev.Msg.Text)
 				}
 			}
 		}
@@ -72,12 +75,12 @@ func main() {
 	var team room.Team
 	teams := room.GetTeams()
 	for _, t := range teams {
+		go t.Rtm.ManageConnection()
+		go handleRtmInCurses(t.Rtm, t.Index)
 		if team_str != t.Index {
 			continue
 		}
 		team = t
-		go team.Rtm.ManageConnection()
-		go handleRtmInCurses(team.Rtm, team.Index)
 	}
 
 	history = make([]string, 0)
@@ -110,6 +113,16 @@ func main() {
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
 			stdscr.MovePrint(row-1, 0, rid+"> ")
 			stdscr.Refresh()
+		} else if c == 93 {
+			rid = "aa"
+			realId = room.StringToId(rid, "0")
+			teams := room.GetTeams()
+			for _, t := range teams {
+				if "0" != t.Index {
+					continue
+				}
+				team = t
+			}
 		} else {
 			nice := gc.KeyString(c)
 			if nice == "up" {
