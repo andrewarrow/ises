@@ -1,5 +1,5 @@
 ises
-.log
+*.log
 id_lookup
 ui
 recent
