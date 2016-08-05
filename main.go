@@ -14,6 +14,8 @@ var (
 	history  []string
 	rid      string
 	realId   string
+	line     string
+	curPos   int
 )
 
 func thready(row int) {
@@ -22,7 +24,7 @@ func thready(row int) {
 		for row, h := range history {
 			stdscr.MovePrint(row, 0, h)
 		}
-		stdscr.MovePrint(row-1, 2, "")
+		stdscr.MovePrint(row-1, curPos+2, "")
 		stdscr.Refresh()
 	}
 }
@@ -85,7 +87,8 @@ func main() {
 	stdscr.MovePrint(row-1, 0, "> ")
 	stdscr.Refresh()
 	buff := make([]byte, 0)
-	line := ""
+	line = ""
+	curPos = 0
 	for {
 		c := stdscr.GetChar()
 		//stdscr.MovePrintf(15, 10, "|%d|", c)
@@ -93,6 +96,7 @@ func main() {
 			//stdscr.MovePrintf(10, 10, "%s", line)
 			team.Say(realId, line)
 			buff = make([]byte, 0)
+			curPos = 0
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
 			stdscr.MovePrint(row-1, 0, "> ")
 			stdscr.Refresh()
@@ -106,10 +110,13 @@ func main() {
 			if nice == "up" {
 			} else if nice == "down" {
 			} else if nice == "left" {
+				curPos--
 			} else if nice == "right" {
+				curPos++
 			} else if c == 127 {
 				if len(buff) > 0 {
 					buff = buff[0 : len(buff)-1]
+					curPos--
 					line = string(buff)
 					stdscr.MovePrint(row-1, 0, "> "+line+" ")
 					stdscr.MovePrint(row-1, len(line)+2, "")
@@ -117,6 +124,7 @@ func main() {
 			} else {
 				buff = append(buff, byte(c))
 				line = string(buff)
+				curPos++
 				stdscr.MovePrint(row-1, 0, "> "+line)
 			}
 			stdscr.Refresh()
