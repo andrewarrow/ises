@@ -13,6 +13,7 @@ var (
 	stdscr   *gc.Window
 	history  []string
 	rid      string
+	realId   string
 )
 
 func thready(row int) {
@@ -58,12 +59,15 @@ func main() {
 	tokens := strings.Split(args[0], ".")
 	team_str := tokens[0]
 	rid = tokens[1]
+	realId = room.StringToId(rid, team_str)
 
+	var team room.Team
 	teams := room.GetTeams()
-	for _, team := range teams {
-		if team_str != team.Index {
+	for _, t := range teams {
+		if team_str != t.Index {
 			continue
 		}
+		team = t
 		go team.Rtm.ManageConnection()
 		go handleRtmInCurses(team.Rtm, team.Index)
 	}
@@ -88,6 +92,7 @@ func main() {
 		if c == 10 || c == 13 {
 			//stdscr.MovePrintf(10, 10, "%s", line)
 			history = append(history, line)
+			team.Say(realId, line)
 			buff = make([]byte, 0)
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
 			stdscr.MovePrint(row-1, 0, "> ")
