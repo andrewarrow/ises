@@ -87,14 +87,13 @@ func findRecents() []RecentRoom {
 	sort.Sort(ByRoomAge(list))
 	return list
 
-	/*
-		fstr := "log.log"
-		f, _ := os.OpenFile(fstr, os.O_APPEND|os.O_WRONLY, 0660)
-		for _, item := range list {
-			_, _ = f.WriteString(item.name + "\n")
-		}
-		f.Close()
-	*/
+}
+
+func log(str string) {
+	fstr := "log.log"
+	f, _ := os.OpenFile(fstr, os.O_APPEND|os.O_WRONLY, 0660)
+	_, _ = f.WriteString(str + "\n")
+	f.Close()
 }
 
 func main() {
@@ -161,6 +160,7 @@ func main() {
 				curRoom = 0
 			}
 			tmp := list[curRoom].name
+			//log(tmp)
 			rid = tmp[2:len(tmp)]
 			newTeam := tmp[0:1]
 			realId = room.StringToId(rid, newTeam)
