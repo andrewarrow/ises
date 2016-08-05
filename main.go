@@ -18,7 +18,7 @@ var (
 
 func thready(row int) {
 	for {
-		time.Sleep(time.Second)
+		time.Sleep(time.Millisecond * 100)
 		for row, h := range history {
 			stdscr.MovePrint(row, 0, h)
 		}
@@ -91,7 +91,6 @@ func main() {
 		//stdscr.MovePrintf(15, 10, "|%d|", c)
 		if c == 10 || c == 13 {
 			//stdscr.MovePrintf(10, 10, "%s", line)
-			history = append(history, line)
 			team.Say(realId, line)
 			buff = make([]byte, 0)
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
