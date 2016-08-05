@@ -123,6 +123,10 @@ func main() {
 				}
 				team = t
 			}
+			curPos = 0
+			stdscr.MovePrint(row-1, 0, "                                                                   ")
+			stdscr.MovePrint(row-1, 0, rid+"> ")
+			stdscr.Refresh()
 		} else {
 			nice := gc.KeyString(c)
 			if nice == "up" {
