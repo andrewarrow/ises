@@ -29,7 +29,7 @@ func thready(maxrows int) {
 		for r, h := range display {
 			stdscr.MovePrint(r, 0, h)
 		}
-		stdscr.MovePrint(maxrows-1, curPos+2, "")
+		stdscr.MovePrint(maxrows-1, curPos+2+len(rid), "")
 		stdscr.Refresh()
 	}
 }
@@ -90,7 +90,7 @@ func main() {
 	//gc.Raw(true)
 	stdscr.Keypad(true)
 
-	stdscr.MovePrint(row-1, 0, "> ")
+	stdscr.MovePrint(row-1, 0, rid+"> ")
 	stdscr.Refresh()
 	buff := make([]byte, 0)
 	line = ""
@@ -108,7 +108,7 @@ func main() {
 			buff = make([]byte, 0)
 			curPos = 0
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
-			stdscr.MovePrint(row-1, 0, "> ")
+			stdscr.MovePrint(row-1, 0, rid+"> ")
 			stdscr.Refresh()
 		} else {
 			nice := gc.KeyString(c)
@@ -123,14 +123,14 @@ func main() {
 					buff = buff[0 : len(buff)-1]
 					curPos--
 					line = string(buff)
-					stdscr.MovePrint(row-1, 0, "> "+line+" ")
-					stdscr.MovePrint(row-1, len(line)+2, "")
+					stdscr.MovePrint(row-1, 0, rid+"> "+line+" ")
+					stdscr.MovePrint(row-1, len(line)+2+len(rid), "")
 				}
 			} else {
 				buff = append(buff, byte(c))
 				line = string(buff)
 				curPos++
-				stdscr.MovePrint(row-1, 0, "> "+line)
+				stdscr.MovePrint(row-1, 0, rid+"> "+line)
 			}
 			stdscr.Refresh()
 		}
