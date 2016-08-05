@@ -99,18 +99,17 @@ func main() {
 		c := stdscr.GetChar()
 		//stdscr.MovePrintf(15, 10, "|%d|", c)
 		if c == 10 || c == 13 {
-			//stdscr.MovePrintf(10, 10, "%s", line)
+			if line == "quit" {
+				gc.End()
+				fmt.Println("")
+				break
+			}
 			team.Say(realId, line)
 			buff = make([]byte, 0)
 			curPos = 0
 			stdscr.MovePrint(row-1, 0, "                                                                   ")
 			stdscr.MovePrint(row-1, 0, "> ")
 			stdscr.Refresh()
-			if line == "quit" {
-				gc.End()
-				fmt.Println("")
-				break
-			}
 		} else {
 			nice := gc.KeyString(c)
 			if nice == "up" {
