@@ -3,11 +3,12 @@ package soeasy
 import gc "github.com/rthornton128/goncurses"
 
 type SoEasyClient struct {
-	s    *gc.Window
-	x    int
-	y    int
-	buff []byte
-	line string
+	s      *gc.Window
+	x      int
+	y      int
+	buff   []byte
+	line   string
+	curPos int
 }
 
 func NewSoEasyClient() *SoEasyClient {
@@ -23,6 +24,7 @@ func NewSoEasyClient() *SoEasyClient {
 }
 
 func (sec *SoEasyClient) Paint() {
+	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
 	sec.s.MovePrint(sec.y-1, 0, "> "+sec.line)
 	sec.s.Refresh()
 }
@@ -31,6 +33,10 @@ func (sec *SoEasyClient) handleReturn() bool {
 	if sec.line == "quit" {
 		return true
 	}
+	sec.buff = make([]byte, 0)
+	sec.line = ""
+	sec.curPos = 0
+	sec.Paint()
 	return false
 }
 
