@@ -26,6 +26,7 @@ func NewSoEasyClient() *SoEasyClient {
 func (sec *SoEasyClient) Paint() {
 	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
 	sec.s.MovePrint(sec.y-1, 0, "> "+sec.line)
+	sec.s.MovePrint(sec.y-1, len(sec.line)+2, "")
 	sec.s.Refresh()
 }
 
@@ -47,6 +48,15 @@ func (sec *SoEasyClient) addCharToBuffer(c gc.Key) {
 	sec.Paint()
 }
 
+func (sec *SoEasyClient) handleBackspace() {
+	if len(sec.buff) > 0 {
+		sec.buff = sec.buff[0 : len(sec.buff)-1]
+		sec.curPos--
+		sec.line = string(sec.buff)
+		sec.Paint()
+	}
+}
+
 func (sec *SoEasyClient) InputLoop() {
 	for {
 		c := sec.s.GetChar()
@@ -65,7 +75,7 @@ func (sec *SoEasyClient) InputLoop() {
 		} else if nice == "right" {
 			//curPos++
 		} else if c == 127 { // backspace
-			//handleBackspace()
+			sec.handleBackspace()
 		} else {
 			sec.addCharToBuffer(c)
 		}
