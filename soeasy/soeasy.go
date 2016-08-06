@@ -71,9 +71,7 @@ func (sec *SoEasyClient) InputLoop() {
 		} else if nice == "up" {
 		} else if nice == "down" {
 		} else if nice == "left" {
-			//curPos--
 		} else if nice == "right" {
-			//curPos++
 		} else if c == 127 { // backspace
 			sec.handleBackspace()
 		} else {

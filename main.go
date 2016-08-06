@@ -19,8 +19,6 @@ var (
 	history  []string
 	rid      string
 	realId   string
-	line     string
-	curPos   int
 	curRoom  int
 	recent   map[string]int64
 )
@@ -147,27 +145,12 @@ func main() {
 	//go thready(row)
 
 	/*
-		stdscr.MovePrint(row-1, 0, rid+"> ")
-		stdscr.Refresh()
-		buff := make([]byte, 0)
-		line = ""
-		curPos = 0
 		curRoom = 0
 		for {
 			c := stdscr.GetChar()
 			//stdscr.MovePrintf(15, 10, "|%d|", c)
 			if c == 10 || c == 13 {
-				if line == "quit" {
-					gc.End()
-					fmt.Println("")
-					break
-				}
 				team.Say(realId, line)
-				buff = make([]byte, 0)
-				curPos = 0
-				stdscr.MovePrint(row-1, 0, "                                                                   ")
-				stdscr.MovePrint(row-1, 0, rid+"> ")
-				stdscr.Refresh()
 			} else if c == 93 {
 				list := findRecents()
 				curRoom++
@@ -189,32 +172,7 @@ func main() {
 					team = t
 				}
 				curPos = 0
-				stdscr.MovePrint(row-1, 0, "                                                                   ")
-				stdscr.MovePrint(row-1, 0, rid+"> ")
-				stdscr.Refresh()
 			} else {
-				nice := gc.KeyString(c)
-				if nice == "up" {
-				} else if nice == "down" {
-				} else if nice == "left" {
-					curPos--
-				} else if nice == "right" {
-					curPos++
-				} else if c == 127 {
-					if len(buff) > 0 {
-						buff = buff[0 : len(buff)-1]
-						curPos--
-						line = string(buff)
-						stdscr.MovePrint(row-1, 0, rid+"> "+line+" ")
-						stdscr.MovePrint(row-1, len(line)+2+len(rid), "")
-					}
-				} else {
-					buff = append(buff, byte(c))
-					line = string(buff)
-					curPos++
-					stdscr.MovePrint(row-1, 0, rid+"> "+line)
-				}
-				stdscr.Refresh()
 			}
 		}
 	*/
