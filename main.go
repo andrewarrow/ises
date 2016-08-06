@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+//import "fmt"
 
 //import gc "github.com/rthornton128/goncurses"
 //import "time"

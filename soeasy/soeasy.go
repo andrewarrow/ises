@@ -29,9 +29,10 @@ func NewSoEasyClient() *SoEasyClient {
 }
 
 func (sec *SoEasyClient) Paint() {
+	r := sec.recent[sec.curRoom]
 	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
-	sec.s.MovePrint(sec.y-1, 0, "> "+sec.line)
-	sec.s.MovePrint(sec.y-1, len(sec.line)+2, "")
+	sec.s.MovePrint(sec.y-1, 0, r.name+"> "+sec.line)
+	sec.s.MovePrint(sec.y-1, len(r.name)+len(sec.line)+2, "")
 	sec.s.Refresh()
 }
 
@@ -61,6 +62,13 @@ func (sec *SoEasyClient) handleBackspace() {
 		sec.Paint()
 	}
 }
+func (sec *SoEasyClient) handleNextRoom() {
+	sec.curRoom++
+	if sec.curRoom >= len(sec.recent) {
+		sec.curRoom = 0
+	}
+	sec.Paint()
+}
 
 func (sec *SoEasyClient) InputLoop() {
 	for {
@@ -72,7 +80,7 @@ func (sec *SoEasyClient) InputLoop() {
 				break
 			}
 		} else if c == 93 { // ] for next
-			//handleNextRoom()
+			sec.handleNextRoom()
 		} else if nice == "up" {
 		} else if nice == "down" {
 		} else if nice == "left" {
