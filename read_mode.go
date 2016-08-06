@@ -45,7 +45,7 @@ func roomHistoryFromCache(room_file string) []string {
 			for {
 				if len(line) > 90 {
 					history = append(history, line[0:90])
-					line = line[90:len(line)]
+					line = line[80:len(line)]
 				} else {
 					break
 				}
