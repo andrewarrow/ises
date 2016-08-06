@@ -12,6 +12,7 @@ type SoEasyClient struct {
 	line         string
 	curPos       int
 	recent       []RecentRoom
+	recentMap    map[string]int64
 	curRoomIndex int
 	curRoom      RecentRoom
 	history      []string

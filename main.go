@@ -4,7 +4,6 @@ package main
 
 //import gc "github.com/rthornton128/goncurses"
 //import "time"
-import "os"
 
 //import "sort"
 //import "github.com/nlopes/slack"
