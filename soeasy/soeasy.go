@@ -79,7 +79,6 @@ func (sec *SoEasyClient) handleReturn() bool {
 		return true
 	}
 	sec.team.Say(sec.curRoom.realId, sec.line)
-	sec.history = append(sec.history, sec.line)
 	sec.buff = make([]byte, 0)
 	sec.line = ""
 	sec.curPos = 0
@@ -107,6 +106,14 @@ func (sec *SoEasyClient) roomChange() {
 	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
 	sec.curRoom = sec.recent[sec.curRoomIndex]
 	sec.team = sec.teams[sec.curRoom.teamIndex]
+	y := 0
+	for {
+		sec.s.MovePrint(y, 0, "                                                                                                              ")
+		y++
+		if y > sec.y-5 {
+			break
+		}
+	}
 	sec.Paint()
 }
 
