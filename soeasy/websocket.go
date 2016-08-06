@@ -2,8 +2,7 @@ package soeasy
 
 import "github.com/andrewarrow/ises/room"
 import "github.com/nlopes/slack"
-
-//import "time"
+import "time"
 import "fmt"
 
 func (sec *SoEasyClient) handleRtmInCurses(rtm *slack.RTM, team string) {
@@ -14,7 +13,10 @@ func (sec *SoEasyClient) handleRtmInCurses(rtm *slack.RTM, team string) {
 			switch ev := msg.Data.(type) {
 			case *slack.MessageEvent:
 				name := room.IdToString(ev.Msg.Channel, team)
-				//sec.recentMap[team+"_"+name] = time.Now().Unix()
+				r := NewRecentRoom(team + "_" + name)
+				r.ts = time.Now().Unix()
+				r.realId = ev.Msg.Channel
+				sec.addToRecentOrUpdateTs(r)
 
 				h := make(map[string]string)
 				h["text"] = ev.Msg.Text
