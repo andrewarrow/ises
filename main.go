@@ -143,6 +143,7 @@ func main() {
 	var client *soeasy.SoEasyClient
 	client = soeasy.NewSoEasyClient()
 	client.Paint()
+	client.InputLoop()
 	//go thready(row)
 
 	/*
