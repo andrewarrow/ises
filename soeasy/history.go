@@ -1,4 +1,4 @@
-package main
+package soeasy
 
 import "io/ioutil"
 import "strings"
@@ -23,7 +23,7 @@ func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 func roomHistoryFromCache(room_file string) []string {
 
 	list := make([]Cache, 0)
-	subfiles, _ := ioutil.ReadDir(IsesRoot + "/cache/" + room_file)
+	subfiles, _ := ioutil.ReadDir("cache/" + room_file)
 	for _, sub := range subfiles {
 		tokens := strings.Split(sub.Name(), "_")
 		subtokens := strings.Split(tokens[0], ".")
@@ -38,7 +38,7 @@ func roomHistoryFromCache(room_file string) []string {
 	history := make([]string, 0)
 	for _, c := range list {
 		//t := time.Unix(c.number, 0)
-		f, _ := os.Open(IsesRoot + "/cache/" + c.filename)
+		f, _ := os.Open("cache/" + c.filename)
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			line := scanner.Text()

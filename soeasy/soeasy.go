@@ -90,6 +90,7 @@ func (sec *SoEasyClient) handleNextRoom() {
 	if sec.curRoom >= len(sec.recent) {
 		sec.curRoom = 0
 	}
+	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
 	sec.Paint()
 }
 
@@ -98,6 +99,7 @@ func (sec *SoEasyClient) handlePrevRoom() {
 	if sec.curRoom < 0 {
 		sec.curRoom = len(sec.recent) - 1
 	}
+	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
 	sec.Paint()
 }
 
