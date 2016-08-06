@@ -24,14 +24,12 @@ func NewRecentRoom(full string) RecentRoom {
 	return rr
 }
 
-func recentDefaults() []RecentRoom {
-	rd := make([]RecentRoom, 0)
+func recentDefaults(sec *SoEasyClient) {
 
-	rd = append(rd, NewRecentRoom("1_for_andrew"))
-	rd = append(rd, NewRecentRoom("0_aa"))
-	rd = append(rd, NewRecentRoom("1_general"))
-	rd = append(rd, NewRecentRoom("2_jasoncarulli"))
-	rd = append(rd, NewRecentRoom("3_ast"))
-	rd = append(rd, NewRecentRoom("3_office"))
-	return rd
+	sec.addToRecentOrUpdateTs(NewRecentRoom("1_for_andrew"))
+	sec.addToRecentOrUpdateTs(NewRecentRoom("0_aa"))
+	sec.addToRecentOrUpdateTs(NewRecentRoom("1_general"))
+	sec.addToRecentOrUpdateTs(NewRecentRoom("2_jasoncarulli"))
+	sec.addToRecentOrUpdateTs(NewRecentRoom("3_ast"))
+	sec.addToRecentOrUpdateTs(NewRecentRoom("3_office"))
 }

@@ -12,7 +12,6 @@ type SoEasyClient struct {
 	line         string
 	curPos       int
 	recent       []RecentRoom
-	recentMap    map[string]int64
 	curRoomIndex int
 	curRoom      RecentRoom
 	history      []string
@@ -31,10 +30,15 @@ func NewSoEasyClient() *SoEasyClient {
 	sec.buff = make([]byte, 0)
 	sec.history = make([]string, 0)
 	sec.line = ""
-	sec.recent = recentDefaults()
+	sec.recent = make([]RecentRoom, 0)
+	recentDefaults(&sec)
 	sec.curRoomIndex = 0
 	sec.curRoom = sec.recent[0]
 	return &sec
+}
+
+func (sec *SoEasyClient) addToRecentOrUpdateTs(r RecentRoom) {
+	sec.recent = append(sec.recent, r)
 }
 
 func (sec *SoEasyClient) historyThread() {
@@ -125,8 +129,8 @@ func (sec *SoEasyClient) setupWebsocket() {
 
 func (sec *SoEasyClient) InputLoop() {
 	go sec.historyThread()
-	sec.roomChange()
 	sec.setupWebsocket()
+	sec.roomChange()
 	for {
 		c := sec.s.GetChar()
 		nice := gc.KeyString(c)
