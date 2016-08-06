@@ -85,13 +85,17 @@ func (sec *SoEasyClient) handleBackspace() {
 	}
 }
 
+func (sec *SoEasyClient) paintCurrentRoom() {
+	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
+	sec.Paint()
+}
+
 func (sec *SoEasyClient) handleNextRoom() {
 	sec.curRoom++
 	if sec.curRoom >= len(sec.recent) {
 		sec.curRoom = 0
 	}
-	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
-	sec.Paint()
+	sec.paintCurrentRoom()
 }
 
 func (sec *SoEasyClient) handlePrevRoom() {
@@ -99,12 +103,12 @@ func (sec *SoEasyClient) handlePrevRoom() {
 	if sec.curRoom < 0 {
 		sec.curRoom = len(sec.recent) - 1
 	}
-	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
-	sec.Paint()
+	sec.paintCurrentRoom()
 }
 
 func (sec *SoEasyClient) InputLoop() {
 	go sec.historyThread()
+	sec.paintCurrentRoom()
 	for {
 		c := sec.s.GetChar()
 		nice := gc.KeyString(c)
