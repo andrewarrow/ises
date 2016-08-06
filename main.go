@@ -154,10 +154,6 @@ func main() {
 				team.Say(realId, line)
 			} else if c == 93 {
 				list := findRecents()
-				curRoom++
-				if curRoom >= len(list) {
-					curRoom = 0
-				}
 				tmp := list[curRoom].name
 				history = roomHistoryFromCache(tmp)
 				log(tmp)

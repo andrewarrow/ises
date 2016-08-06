@@ -1,6 +1,7 @@
 package soeasy
 
 import gc "github.com/rthornton128/goncurses"
+import "time"
 
 type SoEasyClient struct {
 	s       *gc.Window
@@ -11,6 +12,7 @@ type SoEasyClient struct {
 	curPos  int
 	recent  []RecentRoom
 	curRoom int
+	history []string
 }
 
 func NewSoEasyClient() *SoEasyClient {
@@ -22,10 +24,29 @@ func NewSoEasyClient() *SoEasyClient {
 	sec.s.Keypad(true)
 	sec.curPos = 0
 	sec.buff = make([]byte, 0)
+	sec.history = make([]string, 0)
 	sec.line = ""
 	sec.recent = recentDefaults()
 	sec.curRoom = 0
 	return &sec
+}
+
+func (sec *SoEasyClient) historyThread() {
+	for {
+		time.Sleep(time.Millisecond * 100)
+		display := make([]string, 0)
+		limit := sec.y - 5
+		if len(sec.history) > limit {
+			display = sec.history[len(sec.history)-limit : len(sec.history)]
+		}
+		for r, oneline := range display {
+			if len(oneline) > 80 {
+				oneline = oneline[0:80]
+			}
+			sec.s.MovePrint(r, 0, oneline+"                                                                                                              ")
+		}
+		sec.Paint()
+	}
 }
 
 func (sec *SoEasyClient) Paint() {
@@ -40,6 +61,7 @@ func (sec *SoEasyClient) handleReturn() bool {
 	if sec.line == "quit" {
 		return true
 	}
+	sec.history = append(sec.history, sec.line)
 	sec.buff = make([]byte, 0)
 	sec.line = ""
 	sec.curPos = 0
