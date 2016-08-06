@@ -62,10 +62,19 @@ func (sec *SoEasyClient) handleBackspace() {
 		sec.Paint()
 	}
 }
+
 func (sec *SoEasyClient) handleNextRoom() {
 	sec.curRoom++
 	if sec.curRoom >= len(sec.recent) {
 		sec.curRoom = 0
+	}
+	sec.Paint()
+}
+
+func (sec *SoEasyClient) handlePrevRoom() {
+	sec.curRoom--
+	if sec.curRoom < 0 {
+		sec.curRoom = len(sec.recent) - 1
 	}
 	sec.Paint()
 }
@@ -79,6 +88,8 @@ func (sec *SoEasyClient) InputLoop() {
 			if shouldBreak == true {
 				break
 			}
+		} else if c == 91 { // [ for prev
+			sec.handlePrevRoom()
 		} else if c == 93 { // ] for next
 			sec.handleNextRoom()
 		} else if nice == "up" {
