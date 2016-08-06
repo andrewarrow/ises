@@ -35,54 +35,6 @@ func (a ByRoomAge) Len() int           { return len(a) }
 func (a ByRoomAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByRoomAge) Less(i, j int) bool { return a[i].ts < a[j].ts }
 
-func thready(maxrows int) {
-	for {
-		time.Sleep(time.Millisecond * 100)
-		display := history[0:len(history)]
-		limit := maxrows - 5
-		if len(history) > limit {
-			display = history[len(history)-limit : len(history)]
-		}
-		for r, oneline := range display {
-			if len(oneline) > 80 {
-				oneline = oneline[0:80]
-			}
-			stdscr.MovePrint(r, 0, oneline+"                                                                                                              ")
-		}
-		stdscr.MovePrint(maxrows-1, curPos+2+len(rid), "")
-		stdscr.Refresh()
-	}
-}
-
-func handleRtmInCurses(rtm *slack.RTM, team string) {
-
-	for {
-		select {
-		case msg := <-rtm.IncomingEvents:
-			switch ev := msg.Data.(type) {
-			case *slack.MessageEvent:
-				name := room.IdToString(ev.Msg.Channel, team)
-				recent[team+"_"+name] = time.Now().Unix()
-				h := make(map[string]string)
-				h["text"] = ev.Msg.Text
-				h["time"] = ev.Msg.Timestamp
-				h["who"] = ev.Msg.User
-				filename := fmt.Sprintf("%s_%s", team, name)
-				room.WriteMessageToDisk(filename, h)
-				if name == rid {
-					who := room.IdToString(ev.Msg.User, team)
-					line := who + "| " + ev.Msg.Text
-					wrap(line, &history)
-				} else {
-					who := room.IdToString(ev.Msg.User, team)
-					line := name + "]" + who + "| " + ev.Msg.Text
-					wrap(line, &history)
-				}
-			}
-		}
-	}
-
-}
 
 func findRecents() []RecentRoom {
 	list := make([]RecentRoom, 0)
@@ -106,7 +58,6 @@ func log(str string) {
 */
 
 func main() {
-	IsesRoot = os.Getenv("ISES_ROOT")
 
 	/*
 		args := os.Args[1:]
@@ -114,16 +65,6 @@ func main() {
 			fmt.Println("./ises rid")
 			return
 		}
-			recent = make(map[string]int64)
-			recent["1_for_andrew"] = time.Now().Unix()
-			recent["0_aa"] = time.Now().Unix()
-			recent["2_jasoncarulli"] = time.Now().Unix()
-			recent["1_general"] = time.Now().Unix()
-			tokens := strings.Split(args[0], ".")
-			team_str := tokens[0]
-			rid = tokens[1]
-			realId = room.StringToId(rid, team_str)
-
 			var team room.Team
 			teams := room.GetTeams()
 			for _, t := range teams {

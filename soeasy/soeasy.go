@@ -2,17 +2,20 @@ package soeasy
 
 import gc "github.com/rthornton128/goncurses"
 import "time"
+import "github.com/andrewarrow/ises/room"
 
 type SoEasyClient struct {
-	s       *gc.Window
-	x       int
-	y       int
-	buff    []byte
-	line    string
-	curPos  int
-	recent  []RecentRoom
-	curRoom int
-	history []string
+	s            *gc.Window
+	x            int
+	y            int
+	buff         []byte
+	line         string
+	curPos       int
+	recent       []RecentRoom
+	curRoomIndex int
+	curRoom      RecentRoom
+	history      []string
+	teams        []room.Team
 }
 
 func NewSoEasyClient() *SoEasyClient {
@@ -27,7 +30,8 @@ func NewSoEasyClient() *SoEasyClient {
 	sec.history = make([]string, 0)
 	sec.line = ""
 	sec.recent = recentDefaults()
-	sec.curRoom = 0
+	sec.curRoomIndex = 0
+	sec.curRoom = sec.recent[0]
 	return &sec
 }
 
@@ -50,7 +54,7 @@ func (sec *SoEasyClient) historyThread() {
 }
 
 func (sec *SoEasyClient) Paint() {
-	r := sec.recent[sec.curRoom]
+	r := sec.curRoom
 	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
 	sec.s.MovePrint(sec.y-1, 0, r.name+"> "+sec.line)
 	sec.s.MovePrint(sec.y-1, len(r.name)+len(sec.line)+2, "")
@@ -86,29 +90,40 @@ func (sec *SoEasyClient) handleBackspace() {
 }
 
 func (sec *SoEasyClient) paintCurrentRoom() {
-	sec.history = roomHistoryFromCache(sec.recent[sec.curRoom].fullName)
+	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
 	sec.Paint()
 }
 
 func (sec *SoEasyClient) handleNextRoom() {
-	sec.curRoom++
-	if sec.curRoom >= len(sec.recent) {
-		sec.curRoom = 0
+	sec.curRoomIndex++
+	if sec.curRoomIndex >= len(sec.recent) {
+		sec.curRoomIndex = 0
 	}
+	sec.curRoom = sec.recent[sec.curRoomIndex]
 	sec.paintCurrentRoom()
 }
 
 func (sec *SoEasyClient) handlePrevRoom() {
-	sec.curRoom--
-	if sec.curRoom < 0 {
-		sec.curRoom = len(sec.recent) - 1
+	sec.curRoomIndex--
+	if sec.curRoomIndex < 0 {
+		sec.curRoomIndex = len(sec.recent) - 1
 	}
+	sec.curRoom = sec.recent[sec.curRoomIndex]
 	sec.paintCurrentRoom()
+}
+
+func (sec *SoEasyClient) setupWebsocket() {
+	teams := room.GetTeams()
+	for _, t := range teams {
+		go t.Rtm.ManageConnection()
+		//go handleRtmInCurses(t.Rtm, t.Index)
+	}
 }
 
 func (sec *SoEasyClient) InputLoop() {
 	go sec.historyThread()
 	sec.paintCurrentRoom()
+	sec.setupWebsocket()
 	for {
 		c := sec.s.GetChar()
 		nice := gc.KeyString(c)

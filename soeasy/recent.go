@@ -1,6 +1,7 @@
 package soeasy
 
 import "time"
+import "github.com/andrewarrow/ises/room"
 
 type RecentRoom struct {
 	ts       int64
@@ -16,6 +17,7 @@ func NewRecentRoom(full string) RecentRoom {
 	rr.ts = time.Now().Unix()
 	rr.name = full[2:len(full)]
 	rr.team = full[0:1]
+	rr.realId = room.StringToId(rr.name, rr.team)
 	return rr
 }
 
