@@ -67,6 +67,7 @@ func (sec *SoEasyClient) handleReturn() bool {
 	if sec.line == "quit" {
 		return true
 	}
+	sec.team.Say(sec.curRoom.realId, sec.line)
 	sec.history = append(sec.history, sec.line)
 	sec.buff = make([]byte, 0)
 	sec.line = ""
@@ -118,7 +119,7 @@ func (sec *SoEasyClient) setupWebsocket() {
 	sec.teams = room.GetTeams()
 	for _, t := range sec.teams {
 		go t.Rtm.ManageConnection()
-		//go handleRtmInCurses(t.Rtm, t.Index)
+		go sec.handleRtmInCurses(t.Rtm, t.Index)
 	}
 }
 
