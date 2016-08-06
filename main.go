@@ -97,6 +97,7 @@ func log(str string) {
 }
 
 func main() {
+	IsesRoot = os.Getenv("ISES_ROOT")
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("./ises rid")
@@ -160,7 +161,9 @@ func main() {
 				curRoom = 0
 			}
 			tmp := list[curRoom].name
-			//log(tmp)
+			history = roomHistoryFromCache(tmp)
+			log(tmp)
+			log(fmt.Sprintf("%d", len(history)))
 			rid = tmp[2:len(tmp)]
 			newTeam := tmp[0:1]
 			realId = room.StringToId(rid, newTeam)
