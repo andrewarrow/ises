@@ -40,8 +40,11 @@ func thready(maxrows int) {
 		if len(history) > limit {
 			display = history[len(history)-limit : len(history)]
 		}
-		for r, h := range display {
-			stdscr.MovePrint(r, 0, h)
+		for r, oneline := range display {
+			if len(oneline) > 80 {
+				oneline = oneline[0:80]
+			}
+			stdscr.MovePrint(r, 0, oneline+"                                                                                                              ")
 		}
 		stdscr.MovePrint(maxrows-1, curPos+2+len(rid), "")
 		stdscr.Refresh()
@@ -107,6 +110,7 @@ func main() {
 	recent["1_for_andrew"] = time.Now().Unix()
 	recent["0_aa"] = time.Now().Unix()
 	recent["2_jasoncarulli"] = time.Now().Unix()
+	recent["1_general"] = time.Now().Unix()
 	tokens := strings.Split(args[0], ".")
 	team_str := tokens[0]
 	rid = tokens[1]
