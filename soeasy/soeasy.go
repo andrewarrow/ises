@@ -38,6 +38,13 @@ func NewSoEasyClient() *SoEasyClient {
 }
 
 func (sec *SoEasyClient) addToRecentOrUpdateTs(r RecentRoom) {
+	for _, tmp := range sec.recent {
+		if tmp.fullName == r.fullName {
+			tmp.ts = r.ts
+			return
+		}
+	}
+	// TODO sort by ts
 	sec.recent = append(sec.recent, r)
 }
 
