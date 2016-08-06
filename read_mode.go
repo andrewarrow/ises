@@ -42,17 +42,21 @@ func roomHistoryFromCache(room_file string) []string {
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			line := scanner.Text()
-			for {
-				if len(line) > 90 {
-					history = append(history, line[0:90])
-					line = line[80:len(line)]
-				} else {
-					break
-				}
-			}
-			history = append(history, line)
+			wrap(line, &history)
 		}
 		f.Close()
 	}
 	return history
+}
+
+func wrap(line string, his *[]string) {
+	for {
+		if len(line) > 80 {
+			*his = append(*his, line[0:80])
+			line = line[80:len(line)]
+		} else {
+			break
+		}
+	}
+	*his = append(*his, line)
 }
