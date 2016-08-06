@@ -41,8 +41,16 @@ func roomHistoryFromCache(room_file string) []string {
 		f, _ := os.Open(IsesRoot + "/cache/" + c.filename)
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
-			//fmt.Println("      " + scanner.Text())
-			history = append(history, scanner.Text())
+			line := scanner.Text()
+			for {
+				if len(line) > 90 {
+					history = append(history, line[0:90])
+					line = line[90:len(line)]
+				} else {
+					break
+				}
+			}
+			history = append(history, line)
 		}
 		f.Close()
 	}
