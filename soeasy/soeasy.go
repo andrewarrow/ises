@@ -3,12 +3,14 @@ package soeasy
 import gc "github.com/rthornton128/goncurses"
 
 type SoEasyClient struct {
-	s      *gc.Window
-	x      int
-	y      int
-	buff   []byte
-	line   string
-	curPos int
+	s       *gc.Window
+	x       int
+	y       int
+	buff    []byte
+	line    string
+	curPos  int
+	recent  []RecentRoom
+	curRoom int
 }
 
 func NewSoEasyClient() *SoEasyClient {
@@ -18,8 +20,11 @@ func NewSoEasyClient() *SoEasyClient {
 	gc.Echo(false)
 	//gc.Raw(true)
 	sec.s.Keypad(true)
+	sec.curPos = 0
 	sec.buff = make([]byte, 0)
 	sec.line = ""
+	sec.recent = recentDefaults()
+	sec.curRoom = 0
 	return &sec
 }
 

@@ -107,36 +107,37 @@ func log(str string) {
 
 func main() {
 	IsesRoot = os.Getenv("ISES_ROOT")
-	args := os.Args[1:]
-	if len(args) == 0 {
-		fmt.Println("./ises rid")
-		return
-	}
+
 	/*
-		recent = make(map[string]int64)
-		recent["1_for_andrew"] = time.Now().Unix()
-		recent["0_aa"] = time.Now().Unix()
-		recent["2_jasoncarulli"] = time.Now().Unix()
-		recent["1_general"] = time.Now().Unix()
-		tokens := strings.Split(args[0], ".")
-		team_str := tokens[0]
-		rid = tokens[1]
-		realId = room.StringToId(rid, team_str)
-
-		var team room.Team
-		teams := room.GetTeams()
-		for _, t := range teams {
-			go t.Rtm.ManageConnection()
-			//go handleRtmInCurses(t.Rtm, t.Index)
-			if team_str != t.Index {
-				continue
-			}
-			team = t
+		args := os.Args[1:]
+		if len(args) == 0 {
+			fmt.Println("./ises rid")
+			return
 		}
+			recent = make(map[string]int64)
+			recent["1_for_andrew"] = time.Now().Unix()
+			recent["0_aa"] = time.Now().Unix()
+			recent["2_jasoncarulli"] = time.Now().Unix()
+			recent["1_general"] = time.Now().Unix()
+			tokens := strings.Split(args[0], ".")
+			team_str := tokens[0]
+			rid = tokens[1]
+			realId = room.StringToId(rid, team_str)
 
-		history = make([]string, 0)
-		//history = append(history, team_str)
-		//history = append(history, rid)
+			var team room.Team
+			teams := room.GetTeams()
+			for _, t := range teams {
+				go t.Rtm.ManageConnection()
+				//go handleRtmInCurses(t.Rtm, t.Index)
+				if team_str != t.Index {
+					continue
+				}
+				team = t
+			}
+
+			history = make([]string, 0)
+			//history = append(history, team_str)
+			//history = append(history, rid)
 	*/
 	var client *soeasy.SoEasyClient
 	client = soeasy.NewSoEasyClient()
