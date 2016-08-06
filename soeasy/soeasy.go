@@ -34,7 +34,7 @@ func NewSoEasyClient() *SoEasyClient {
 func (sec *SoEasyClient) historyThread() {
 	for {
 		time.Sleep(time.Millisecond * 100)
-		display := make([]string, 0)
+		display := sec.history[0:len(sec.history)]
 		limit := sec.y - 5
 		if len(sec.history) > limit {
 			display = sec.history[len(sec.history)-limit : len(sec.history)]
@@ -102,6 +102,7 @@ func (sec *SoEasyClient) handlePrevRoom() {
 }
 
 func (sec *SoEasyClient) InputLoop() {
+	go sec.historyThread()
 	for {
 		c := sec.s.GetChar()
 		nice := gc.KeyString(c)
