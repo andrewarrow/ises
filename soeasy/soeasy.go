@@ -103,8 +103,8 @@ func (sec *SoEasyClient) handleBackspace() {
 }
 
 func (sec *SoEasyClient) roomChange() {
-	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
 	sec.curRoom = sec.recent[sec.curRoomIndex]
+	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
 	sec.team = sec.teams[sec.curRoom.teamIndex]
 	y := 0
 	for {
