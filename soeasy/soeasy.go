@@ -16,6 +16,7 @@ type SoEasyClient struct {
 	curRoom      RecentRoom
 	history      []string
 	teams        []room.Team
+	team         room.Team
 }
 
 func NewSoEasyClient() *SoEasyClient {
@@ -89,8 +90,10 @@ func (sec *SoEasyClient) handleBackspace() {
 	}
 }
 
-func (sec *SoEasyClient) paintCurrentRoom() {
+func (sec *SoEasyClient) roomChange() {
 	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
+	sec.curRoom = sec.recent[sec.curRoomIndex]
+	sec.team = sec.teams[sec.curRoom.teamIndex]
 	sec.Paint()
 }
 
@@ -99,8 +102,7 @@ func (sec *SoEasyClient) handleNextRoom() {
 	if sec.curRoomIndex >= len(sec.recent) {
 		sec.curRoomIndex = 0
 	}
-	sec.curRoom = sec.recent[sec.curRoomIndex]
-	sec.paintCurrentRoom()
+	sec.roomChange()
 }
 
 func (sec *SoEasyClient) handlePrevRoom() {
@@ -108,13 +110,12 @@ func (sec *SoEasyClient) handlePrevRoom() {
 	if sec.curRoomIndex < 0 {
 		sec.curRoomIndex = len(sec.recent) - 1
 	}
-	sec.curRoom = sec.recent[sec.curRoomIndex]
-	sec.paintCurrentRoom()
+	sec.roomChange()
 }
 
 func (sec *SoEasyClient) setupWebsocket() {
-	teams := room.GetTeams()
-	for _, t := range teams {
+	sec.teams = room.GetTeams()
+	for _, t := range sec.teams {
 		go t.Rtm.ManageConnection()
 		//go handleRtmInCurses(t.Rtm, t.Index)
 	}
@@ -122,7 +123,7 @@ func (sec *SoEasyClient) setupWebsocket() {
 
 func (sec *SoEasyClient) InputLoop() {
 	go sec.historyThread()
-	sec.paintCurrentRoom()
+	sec.roomChange()
 	sec.setupWebsocket()
 	for {
 		c := sec.s.GetChar()
