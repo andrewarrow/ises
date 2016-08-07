@@ -21,7 +21,9 @@ or make real ones with generate.rb
 Your first time running ./ises it will:
 
 1) download the name and id of each room your are in, in each team
+
 2) download the names of every user in every team
+
 3) download the last 10 messages in every room... in every team
 
 and caches this all to disk.
