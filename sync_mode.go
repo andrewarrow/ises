@@ -49,7 +49,7 @@ func handleFile(filename string, team room.Team, r map[string]string) {
 		return
 	}
 
-	history := team.History(r["id"], r["thing"], "")
+	history := team.History(r["id"], r["thing"])
 	if len(history) == 0 {
 		return
 	}

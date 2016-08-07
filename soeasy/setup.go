@@ -35,6 +35,10 @@ func cache_rooms(team room.Team) {
 		f, _ = os.OpenFile(fstr2, os.O_CREATE|os.O_WRONLY, 0660)
 		_, _ = f.WriteString(r["id"])
 		f.Close()
+
+		fmt.Println("  Caching recent messages ", r["room"])
+		list := team.History(r["id"], r["thing"])
+		fmt.Println(fmt.Sprintf("%d", len(list)))
 	}
 }
 
