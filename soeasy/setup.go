@@ -38,7 +38,10 @@ func cache_rooms(team room.Team) {
 
 		fmt.Println("  Caching recent messages ", r["room"])
 		list := team.History(r["id"], r["thing"])
-		fmt.Println(fmt.Sprintf("%d", len(list)))
+		for _, h := range list {
+			filename := fmt.Sprintf("%s_%s", team.Index, r["room"])
+			room.WriteMessageToDisk(filename, h)
+		}
 	}
 }
 
