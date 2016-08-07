@@ -11,28 +11,6 @@ type Team struct {
 	Index string
 }
 
-func (t Team) Recents() []map[string]string {
-	list := make([]map[string]string, 0)
-	if t.Index == "0" {
-		m := make(map[string]string)
-		m["room"] = "ac_biz"
-		m["count"] = "4"
-		list = append(list, m)
-		m = make(map[string]string)
-		m["room"] = "marketing"
-		m["count"] = "3"
-		list = append(list, m)
-	}
-	if t.Index == "1" {
-		m := make(map[string]string)
-		m["room"] = "payouts"
-		m["count"] = "1"
-		list = append(list, m)
-	}
-
-	return list
-}
-
 func (t Team) Say(id, say string) error {
 	params := slack.PostMessageParameters{}
 	params.AsUser = true
