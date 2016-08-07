@@ -20,7 +20,26 @@ func (a ByAge) Len() int           { return len(a) }
 func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 
-func roomHistoryFromCache(room_file string) []string {
+func computeLatestRooms() []string {
+
+	res := make([]string, 0)
+
+	list := make([]Cache, 0)
+	subfiles, _ := ioutil.ReadDir("cache/messages/")
+	for _, sub := range subfiles {
+		for _, a := range roomHistoryStep1(sub.Name()) {
+			list = append(list, a)
+		}
+	}
+	sort.Sort(ByAge(list))
+
+	if len(list) < 10 {
+		return res
+	}
+	return res[0:10]
+}
+
+func roomHistoryStep1(room_file string) []Cache {
 
 	list := make([]Cache, 0)
 	subfiles, _ := ioutil.ReadDir("cache/messages/" + room_file)
@@ -33,6 +52,12 @@ func roomHistoryFromCache(room_file string) []string {
 		c.filename = room_file + "/" + sub.Name()
 		list = append(list, c)
 	}
+	return list
+}
+
+func roomHistoryFromCache(room_file string) []string {
+
+	list := roomHistoryStep1(room_file)
 
 	sort.Sort(ByAge(list))
 	history := make([]string, 0)
