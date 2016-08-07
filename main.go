@@ -25,6 +25,8 @@ func main() {
 
 	if initMode {
 		fmt.Println("Starting init mode...")
+		soeasy.SoEasySetup()
+		fmt.Println("\nSetup complete, run ./ises again")
 	} else {
 		var client *soeasy.SoEasyClient
 		client = soeasy.NewSoEasyClient()
