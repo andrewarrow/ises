@@ -18,7 +18,7 @@ https://api.slack.com/docs/oauth-test-tokens
 or make real ones with generate.rb
 ```
 
-You're first time running ./ises it will:
+Your first time running ./ises it will:
 
 1) download the name and id of each room your are in, in each team
 2) download the names of every user in every team
