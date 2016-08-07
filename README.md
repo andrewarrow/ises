@@ -11,11 +11,7 @@ SLACK_TOKEN_0=xoxp-4422442222-3111111111-11111111118-11aeea211e
 SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
 SLACK_TEAMS=2
 
-you can get test tokens:
-
-https://api.slack.com/docs/oauth-test-tokens
-
-or make real ones with generate.rb
+you can get tokens here: http://utc24.org
 ```
 
 Your first time running ./ises it will:
