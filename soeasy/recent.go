@@ -29,6 +29,9 @@ func mostRecent() []string {
 	subfiles, _ := ioutil.ReadDir("cache/messages/")
 	list := make([]string, 0)
 	for _, sub := range subfiles {
+		if sub.Name() == ".DS_Store" {
+			continue
+		}
 		list = append(list, sub.Name())
 	}
 	if len(list) < 5 {
