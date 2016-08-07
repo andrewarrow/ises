@@ -30,7 +30,7 @@ You can get it to do this again someday with --init option.
 
 The 2nd time you run ./ises it will boot quick and be in conversation mode.
 
-`room_name>type your message here`
+`room_name> type your message here`
 
 is the prompt you see. Press ] to advance a room.
 
