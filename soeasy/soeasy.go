@@ -3,6 +3,9 @@ package soeasy
 import gc "github.com/rthornton128/goncurses"
 import "time"
 import "github.com/andrewarrow/ises/room"
+import "sync"
+
+var EasyMutex = &sync.Mutex{}
 
 type SoEasyClient struct {
 	s            *gc.Window
@@ -56,22 +59,26 @@ func (sec *SoEasyClient) historyThread() {
 		if len(sec.history) > limit {
 			display = sec.history[len(sec.history)-limit : len(sec.history)]
 		}
+		EasyMutex.Lock()
 		for r, oneline := range display {
 			if len(oneline) > 80 {
 				oneline = oneline[0:80]
 			}
 			sec.s.MovePrint(r, 0, oneline+"                                                                                                              ")
 		}
+		EasyMutex.Unlock()
 		sec.Paint()
 	}
 }
 
 func (sec *SoEasyClient) Paint() {
 	r := sec.curRoom
+	EasyMutex.Lock()
 	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
 	sec.s.MovePrint(sec.y-1, 0, r.name+"> "+sec.line)
 	sec.s.MovePrint(sec.y-1, len(r.name)+len(sec.line)+2, "")
 	sec.s.Refresh()
+	EasyMutex.Unlock()
 }
 
 func (sec *SoEasyClient) handleReturn() bool {
@@ -107,6 +114,7 @@ func (sec *SoEasyClient) roomChange() {
 	sec.history = roomHistoryFromCache(sec.curRoom.fullName)
 	sec.team = sec.teams[sec.curRoom.teamIndex]
 	y := 0
+	EasyMutex.Lock()
 	for {
 		sec.s.MovePrint(y, 0, "                                                                                                              ")
 		y++
@@ -114,6 +122,7 @@ func (sec *SoEasyClient) roomChange() {
 			break
 		}
 	}
+	EasyMutex.Unlock()
 	sec.Paint()
 }
 
