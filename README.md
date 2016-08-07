@@ -1,38 +1,38 @@
 **It's So Easy Slack** (i.s.e.s)
 
-read and respond to slack messages from a command line
+read and respond to slack messages from a terminal
 
 ```
 go get github.com/andrewarrow/ises
 cd that dir
 go build
 set these env vars
-SLACK_TEAMS=2
-SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
 SLACK_TOKEN_0=xoxp-4422442222-3111111111-11111111118-11aeea211e
+SLACK_TOKEN_1=xoxp-4422442222-3111111111-11111111118-11aeea211e
+SLACK_TEAMS=2
 
 you can get test tokens:
 
 https://api.slack.com/docs/oauth-test-tokens
 
 or make real ones with generate.rb
-
-./ises -s # to sync last 10 messages from every room to disk
-./ises -r # to read the most recent messages from every room in every team
-
-touch cache/0_roomname/mute     # this will mute this room from now on
-vi cache/1_otherim/say          # puts lines in this file u want to say in room, then sync again
-                                # say file is deleted after it's sent
-
-./ises -d # run in daemon mode using web sockets
-          # new "red dots" are placed in ui/ directory that you can ls
 ```
 
-Where does ises name come from?
+You're first time running ./ises it will:
 
-https://github.com/andrewarrow/paradise_ftp
+1) download the name and id of each room your are in, in each team
+2) download the names of every user in every team
+3) download the last 10 messages in every room... in every team
 
-https://github.com/andrewarrow/jungle_smtp
+and caches this all to disk.
 
-see the pattern?
+You can get it to do this again someday with --init option.
+
+The 2nd time you run ./ises it will boot quick and be in conversation mode.
+
+`room_name>type your message here`
+
+is the prompt you see. Press ] to advance a room.
+
+type quit to exit
 
