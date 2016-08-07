@@ -1,5 +1,6 @@
 ises
 *.log
+.DS_Store
 id_lookup
 ui
 recent

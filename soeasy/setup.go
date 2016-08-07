@@ -18,8 +18,24 @@ func SoEasySetup() {
 	for _, team := range teams {
 		fmt.Println("Caching users from team ", team.Index)
 		cache_users(team)
+		fmt.Println("Caching rooms from team ", team.Index)
+		cache_rooms(team)
 	}
 
+}
+
+func cache_rooms(team room.Team) {
+	rooms := team.Rooms()
+	for _, r := range rooms {
+		fstr1 := "cache/id_lookup/" + team.Index + "/" + r["id"]
+		fstr2 := "cache/reverse_lookup/" + team.Index + "/" + r["room"]
+		f, _ := os.OpenFile(fstr1, os.O_CREATE|os.O_WRONLY, 0660)
+		_, _ = f.WriteString(r["room"])
+		f.Close()
+		f, _ = os.OpenFile(fstr2, os.O_CREATE|os.O_WRONLY, 0660)
+		_, _ = f.WriteString(r["id"])
+		f.Close()
+	}
 }
 
 func cache_users(team room.Team) {
