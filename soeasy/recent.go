@@ -3,6 +3,7 @@ package soeasy
 import "time"
 import "github.com/andrewarrow/ises/room"
 import "strconv"
+import "io/ioutil"
 
 type RecentRoom struct {
 	ts        int64
@@ -24,12 +25,21 @@ func NewRecentRoom(full string) RecentRoom {
 	return rr
 }
 
+func mostRecent() []string {
+	subfiles, _ := ioutil.ReadDir("cache/messages/")
+	list := make([]string, 0)
+	for _, sub := range subfiles {
+		list = append(list, sub.Name())
+	}
+	if len(list) < 5 {
+		panic("you need more rooms")
+	}
+	return list[0:5]
+}
+
 func recentDefaults(sec *SoEasyClient) {
 
-	sec.addToRecentOrUpdateTs(NewRecentRoom("1_for_andrew"))
-	sec.addToRecentOrUpdateTs(NewRecentRoom("0_aa"))
-	sec.addToRecentOrUpdateTs(NewRecentRoom("1_general"))
-	sec.addToRecentOrUpdateTs(NewRecentRoom("2_jasoncarulli"))
-	sec.addToRecentOrUpdateTs(NewRecentRoom("3_ast"))
-	sec.addToRecentOrUpdateTs(NewRecentRoom("3_office"))
+	for _, r := range mostRecent() {
+		sec.addToRecentOrUpdateTs(NewRecentRoom(r))
+	}
 }
