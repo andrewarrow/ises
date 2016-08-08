@@ -4,6 +4,7 @@ import gc "github.com/rthornton128/goncurses"
 import "time"
 import "github.com/andrewarrow/ises/room"
 import "sync"
+import "fmt"
 
 var EasyMutex = &sync.Mutex{}
 
@@ -35,6 +36,7 @@ func NewSoEasyClient() *SoEasyClient {
 	sec.line = ""
 	sec.recent = make([]RecentRoom, 0)
 	recentDefaults(&sec)
+	log(fmt.Sprintf("%d", len(sec.recent)))
 	sec.curRoomIndex = 0
 	sec.curRoom = sec.recent[0]
 	return &sec

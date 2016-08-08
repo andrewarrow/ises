@@ -46,12 +46,18 @@ func computeLatestRooms() []string {
 	}
 	sort.Sort(ByAgeRev(list))
 
-	for i, c := range list {
+	already := make(map[string]string)
+	for _, c := range list {
 		tokens := strings.Split(c.filename, "/")
-		res = append(res, tokens[0])
-		if i > 10 {
+		room_name := tokens[0]
+		already[room_name] = "1"
+
+		if len(already) > 10 {
 			break
 		}
+	}
+	for k, _ := range already {
+		res = append(res, k)
 	}
 
 	return res
