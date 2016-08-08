@@ -25,7 +25,7 @@ func NewRecentRoom(full string) RecentRoom {
 	return rr
 }
 
-func mostRecent() []string {
+func simpleMostRecent() []string {
 	subfiles, _ := ioutil.ReadDir("cache/messages/")
 	list := make([]string, 0)
 	for _, sub := range subfiles {
@@ -38,6 +38,10 @@ func mostRecent() []string {
 		panic("you need more rooms")
 	}
 	return list[0:5]
+}
+
+func mostRecent() []string {
+	return computeLatestRooms()
 }
 
 func recentDefaults(sec *SoEasyClient) {

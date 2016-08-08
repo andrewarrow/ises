@@ -20,6 +20,13 @@ func (a ByAge) Len() int           { return len(a) }
 func (a ByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByAge) Less(i, j int) bool { return a[i].number < a[j].number }
 
+func log(str string) {
+	fstr := "log.log"
+	f, _ := os.OpenFile(fstr, os.O_APPEND|os.O_WRONLY, 0660)
+	_, _ = f.WriteString(str + "\n")
+	f.Close()
+}
+
 func computeLatestRooms() []string {
 
 	res := make([]string, 0)
@@ -33,10 +40,15 @@ func computeLatestRooms() []string {
 	}
 	sort.Sort(ByAge(list))
 
-	if len(list) < 10 {
-		return res
+	for i, c := range list {
+		tokens := strings.Split(c.filename, "/")
+		res = append(res, tokens[0])
+		if i > 10 {
+			break
+		}
 	}
-	return res[0:10]
+
+	return res
 }
 
 func roomHistoryStep1(room_file string) []Cache {

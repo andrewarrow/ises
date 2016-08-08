@@ -4,13 +4,6 @@ import "github.com/andrewarrow/ises/soeasy"
 import "os"
 import "fmt"
 
-func log(str string) {
-	fstr := "log.log"
-	f, _ := os.OpenFile(fstr, os.O_APPEND|os.O_WRONLY, 0660)
-	_, _ = f.WriteString(str + "\n")
-	f.Close()
-}
-
 func main() {
 	args := os.Args[1:]
 	initMode := false
