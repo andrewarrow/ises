@@ -50,6 +50,11 @@ func computeLatestRooms() []string {
 	for _, c := range list {
 		tokens := strings.Split(c.filename, "/")
 		room_name := tokens[0]
+		_, err := os.Stat("cache/messages/" + room_name + "/mute")
+		if !os.IsNotExist(err) {
+			continue
+		}
+
 		already[room_name] = "1"
 
 		if len(already) > 10 {
@@ -68,6 +73,9 @@ func roomHistoryStep1(room_file string) []Cache {
 	list := make([]Cache, 0)
 	subfiles, _ := ioutil.ReadDir("cache/messages/" + room_file)
 	for _, sub := range subfiles {
+		if sub.Name() == "mute" {
+			continue
+		}
 		tokens := strings.Split(sub.Name(), "_")
 		subtokens := strings.Split(tokens[0], ".")
 		number, _ := strconv.ParseInt(subtokens[0], 10, 0)
