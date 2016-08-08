@@ -77,8 +77,8 @@ func (sec *SoEasyClient) Paint() {
 	r := sec.curRoom
 	EasyMutex.Lock()
 	sec.s.MovePrint(sec.y-1, 0, "                                                                              ")
-	sec.s.MovePrint(sec.y-1, 0, r.name+"> "+sec.line)
-	sec.s.MovePrint(sec.y-1, len(r.name)+len(sec.line)+2, "")
+	sec.s.MovePrint(sec.y-1, 0, r.team+"_"+r.name+"> "+sec.line)
+	sec.s.MovePrint(sec.y-1, 2+len(r.name)+len(sec.line)+2, "")
 	sec.s.Refresh()
 	EasyMutex.Unlock()
 }
