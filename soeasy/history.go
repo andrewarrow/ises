@@ -4,6 +4,8 @@ import "io/ioutil"
 import "strings"
 import "strconv"
 import "sort"
+import "github.com/andrewarrow/ises/room"
+import "fmt"
 
 //import "time"
 import "bufio"
@@ -12,6 +14,7 @@ import "os"
 type Cache struct {
 	number   int64
 	filename string
+	fullDate string
 }
 
 type ByAge []Cache
@@ -36,6 +39,7 @@ func log(str string) {
 func (sec *SoEasyClient) lookForMissingMessages() {
 	list := allRoomsStep1()
 	already := make(map[string]string)
+	teams := room.GetTeams()
 	for _, c := range list {
 		tokens := strings.Split(c.filename, "/")
 		room_name := tokens[0]
@@ -44,7 +48,15 @@ func (sec *SoEasyClient) lookForMissingMessages() {
 			continue
 		}
 		if already[room_name] == "" {
-			log(room_name)
+			teamStr := room_name[0:1]
+			teamIndex, _ := strconv.Atoi(teamStr)
+			realId := room.StringToId(room_name[2:], teamStr)
+			missing := teams[teamIndex].History(realId, realId[0:1], c.fullDate)
+			for _, h := range missing {
+				room.WriteMessageToDisk(room_name, h)
+				log(room_name)
+				log(fmt.Sprintf("%v", h))
+			}
 			already[room_name] = "1"
 		}
 	}
@@ -98,10 +110,12 @@ func roomHistoryStep1(room_file string) []Cache {
 			continue
 		}
 		tokens := strings.Split(sub.Name(), "_")
+
 		subtokens := strings.Split(tokens[0], ".")
 		number, _ := strconv.ParseInt(subtokens[0], 10, 0)
 		c := Cache{}
 		c.number = number
+		c.fullDate = tokens[0]
 		c.filename = room_file + "/" + sub.Name()
 		list = append(list, c)
 	}
