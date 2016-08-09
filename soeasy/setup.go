@@ -10,7 +10,7 @@ func SoEasySetup() {
 		fmt.Println("Could not create dir: ", err.Error())
 		return
 	}
-	teams := room.GetTeams()
+	teams := room.GetTeams(false)
 	if len(teams) == 0 {
 		fmt.Println("Set your SLACK_TEAMS=1 and SLACK_TOKEN_0 env vars")
 		return

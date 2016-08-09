@@ -145,7 +145,7 @@ func (sec *SoEasyClient) handlePrevRoom() {
 }
 
 func (sec *SoEasyClient) setupWebsocket() {
-	sec.teams = room.GetTeams()
+	sec.teams = room.GetTeams(true)
 	for _, t := range sec.teams {
 		go t.Rtm.ManageConnection()
 		go sec.handleRtmInCurses(t.Rtm, t.Index)
@@ -155,7 +155,7 @@ func (sec *SoEasyClient) setupWebsocket() {
 func (sec *SoEasyClient) InputLoop() {
 	go sec.historyThread()
 	sec.setupWebsocket()
-	go sec.lookForMissingMessages()
+	//go sec.lookForMissingMessages()
 	sec.roomChange()
 	for {
 		c := sec.s.GetChar()

@@ -22,7 +22,7 @@ func (t Team) Say(id, say string) error {
 
 func (t Team) History(id, thing, latest string) []map[string]string {
 	list := make([]map[string]string, 0)
-	hp := slack.HistoryParameters{Oldest: "", Latest: latest, Count: 10, Inclusive: false, Unreads: false}
+	hp := slack.HistoryParameters{Oldest: latest, Latest: "", Count: 100, Inclusive: false, Unreads: false}
 	if thing == "C" {
 		history, _ := t.Api.GetChannelHistory(id, hp)
 		//fmt.Println("ch ", err)
@@ -92,7 +92,7 @@ func (t Team) Rooms() []map[string]string {
 	return list
 }
 
-func GetTeams() []Team {
+func GetTeams(rtm bool) []Team {
 	teams := make([]Team, 0)
 
 	slack_teams, _ := strconv.ParseInt(os.Getenv("SLACK_TEAMS"), 10, 64)
@@ -102,7 +102,9 @@ func GetTeams() []Team {
 		team := Team{}
 		team.Index = fmt.Sprintf("%d", i)
 		team.Api = slack.New(os.Getenv(key))
-		team.Rtm = team.Api.NewRTM()
+		if rtm {
+			team.Rtm = team.Api.NewRTM()
+		}
 		//fmt.Println(team)
 		teams = append(teams, team)
 

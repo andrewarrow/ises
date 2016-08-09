@@ -39,7 +39,7 @@ func log(str string) {
 func (sec *SoEasyClient) lookForMissingMessages() {
 	list := allRoomsStep1()
 	already := make(map[string]string)
-	teams := room.GetTeams()
+	teams := room.GetTeams(false)
 	for _, c := range list {
 		tokens := strings.Split(c.filename, "/")
 		room_name := tokens[0]
