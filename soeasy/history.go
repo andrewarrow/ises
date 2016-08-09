@@ -33,10 +33,24 @@ func log(str string) {
 	f.Close()
 }
 
-func computeLatestRooms() []string {
+func (sec *SoEasyClient) lookForMissingMessages() {
+	list := allRoomsStep1()
+	already := make(map[string]string)
+	for _, c := range list {
+		tokens := strings.Split(c.filename, "/")
+		room_name := tokens[0]
+		_, err := os.Stat("cache/messages/" + room_name + "/mute")
+		if !os.IsNotExist(err) {
+			continue
+		}
+		if already[room_name] == "" {
+			log(room_name)
+			already[room_name] = "1"
+		}
+	}
+}
 
-	res := make([]string, 0)
-
+func allRoomsStep1() []Cache {
 	list := make([]Cache, 0)
 	subfiles, _ := ioutil.ReadDir("cache/messages/")
 	for _, sub := range subfiles {
@@ -45,6 +59,13 @@ func computeLatestRooms() []string {
 		}
 	}
 	sort.Sort(ByAgeRev(list))
+	return list
+}
+
+func computeLatestRooms() []string {
+
+	res := make([]string, 0)
+	list := allRoomsStep1()
 
 	already := make(map[string]string)
 	for _, c := range list {
