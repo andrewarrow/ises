@@ -87,7 +87,14 @@ func (sec *SoEasyClient) handleReturn() bool {
 	if sec.line == "quit" {
 		return true
 	}
-	sec.team.Say(sec.curRoom.realId, sec.line)
+	sayIt := true
+	if sec.line == "/prev" {
+		sayIt = false
+	}
+
+	if sayIt {
+		sec.team.Say(sec.curRoom.realId, sec.line)
+	}
 	sec.buff = make([]byte, 0)
 	sec.line = ""
 	sec.curPos = 0
