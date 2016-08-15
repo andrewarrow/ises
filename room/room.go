@@ -20,9 +20,9 @@ func (t Team) Say(id, say string) error {
 	return err
 }
 
-func (t Team) History(id, thing, latest string) []map[string]string {
+func (t Team) History(id, thing, oldest string) []map[string]string {
 	list := make([]map[string]string, 0)
-	hp := slack.HistoryParameters{Oldest: latest, Latest: "", Count: 100, Inclusive: false, Unreads: false}
+	hp := slack.HistoryParameters{Oldest: oldest, Latest: "", Count: 100, Inclusive: false, Unreads: false}
 	if thing == "C" {
 		history, _ := t.Api.GetChannelHistory(id, hp)
 		//fmt.Println("ch ", err)

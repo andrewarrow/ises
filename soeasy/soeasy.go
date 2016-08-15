@@ -83,12 +83,24 @@ func (sec *SoEasyClient) Paint() {
 	EasyMutex.Unlock()
 }
 
+func (sec *SoEasyClient) takeRoomBackOnePage() {
+}
+
+func (sec *SoEasyClient) syncCurrentRoom() {
+	sec.team.Sync(sec.curRoom.fullName, sec.curRoom.realId)
+}
+
 func (sec *SoEasyClient) handleReturn() bool {
 	if sec.line == "quit" {
 		return true
 	}
 	sayIt := true
 	if sec.line == "/prev" {
+		sec.takeRoomBackOnePage()
+		sayIt = false
+	}
+	if sec.line == "/sync" {
+		sec.syncCurrentRoom()
 		sayIt = false
 	}
 
