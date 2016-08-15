@@ -99,7 +99,7 @@ func (sec *SoEasyClient) handleReturn() bool {
 		sec.takeRoomBackOnePage()
 		sayIt = false
 	}
-	if sec.line == "/sync" {
+	if sec.line == "/s" || sec.line == "/sync" {
 		sec.syncCurrentRoom()
 		sayIt = false
 	}
